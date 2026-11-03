@@ -102,9 +102,13 @@ def run(detector, tracker, source: str, names: dict[int, str], show: bool = True
                     writer = cv2.VideoWriter(str(save), cv2.VideoWriter_fourcc(*"mp4v"), source_fps, (width, height))
                 writer.write(frame)
             if show:
-                cv2.imshow(WINDOW, frame)
-                if cv2.waitKey(1) & 0xFF in (27, ord("q")):
-                    break
+                try:
+                    cv2.imshow(WINDOW, frame)
+                    if cv2.waitKey(1) & 0xFF in (27, ord("q"), ord("Q")):
+                        break
+                except cv2.error as error:
+                    print(f"\n[!] GUI window display unavailable. Continuing processing in headless mode...")
+                    show = False
 
             frames += 1
             if max_frames and frames >= max_frames:
@@ -114,7 +118,10 @@ def run(detector, tracker, source: str, names: dict[int, str], show: bool = True
         if writer is not None:
             writer.release()
         if show:
-            cv2.destroyAllWindows()
+            try:
+                cv2.destroyAllWindows()
+            except Exception:
+                pass
 
     by_class = Counter(names.get(class_id, str(class_id)) for class_id in class_of_id.values())
     return {"frames": frames, "unique_objects": len(class_of_id), "by_class": dict(by_class)}
