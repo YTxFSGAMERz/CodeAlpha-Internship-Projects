@@ -1,170 +1,113 @@
-# CodeAlpha Internship Projects - Master Portfolio
+# CodeAlpha Internship Projects
 
-[![Python](https://img.shields.io/badge/Python-3.12%20%7C%203.13-blue.svg)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.6%2B-ee4c2c.svg)](https://pytorch.org/)
-[![Keras](https://img.shields.io/badge/Keras-3.x-red.svg)](https://keras.io/)
-[![Flask](https://img.shields.io/badge/Flask-3.x-black.svg)](https://flask.palletsprojects.com/)
-[![Scapy](https://img.shields.io/badge/Scapy-2.5%2B-red.svg)](https://scapy.net/)
-[![Tests](https://img.shields.io/badge/Tests-121%20Passed%20(100%25)-brightgreen.svg)](#master-test-runner)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+Hi, I'm Farhan Shaikh ([@YTxFSGAMERz](https://github.com/YTxFSGAMERz)). This repository contains the assignments and projects I completed during my internship with CodeAlpha.
 
-A unified repository containing coursework and project implementations for the **CodeAlpha Internship** completed by **[Farhan (YTxFSGAMERz)](https://github.com/YTxFSGAMERz)**. 
-
-This repository spans **3 distinct engineering tracks** and **12 production-ready projects**, complete with interactive web interfaces, machine learning models, neural networks, network packet analyzers, intrusion detection signatures, and automated test suites.
+The work is split into three tracks: **Artificial Intelligence**, **Cybersecurity**, and **Machine Learning**. Each folder is self-contained with its own code, data/assets, dependencies, and README.
 
 ---
 
-## 🏛️ Repository Architecture
+## Projects Overview
 
-```
-CodeAlpha Internship Projects/
-├── verify_all.py                       # Master verification test runner
-├── .gitignore                          # Global monorepo ignore rules
-│
-├── Artificial Intelligence/            # Track 1: AI & NLP Systems
-│   ├── CodeAlpha_FAQChatbot/           # Task 1: NLP FAQ Chatbot + Web App
-│   ├── CodeAlpha_LanguageTranslationTool/ # Task 2: Multi-Language Translator + Web App
-│   ├── CodeAlpha_MusicGenerationAI/    # Task 3: Deep LSTM MIDI & Audio Composer
-│   └── CodeAlpha_ObjectDetectionTracking/ # Task 4: YOLOv8 + SORT Multi-Object Tracker
-│
-├── Cybersecurity/                      # Track 2: Security & Network Defense
-│   ├── CodeAlpha_BasicNetworkSniffer/  # Task 1: Raw Packet Sniffer & Protocol Decoder
-│   ├── CodeAlpha_NetworkIntrusionDetectionSystem/ # Task 2: Signature NIDS & Traffic Analyzer
-│   ├── CodeAlpha_PhishingAwarenessTraining/ # Task 3: Interactive Web Phishing Simulator
-│   └── CodeAlpha_SecureCodingReview/   # Task 4: NoteBox Vulnerable vs Hardened API (OWASP)
-│
-└── Machine Learning/                   # Track 3: Predictive ML & Computer Vision
-    ├── CodeAlpha_CreditScoringModel/   # Task 1: Credit Risk Scorer & Financial Scorecard
-    ├── CodeAlpha_DiseasePrediction/    # Task 2: Multi-Disease Clinical Diagnostic Models
-    ├── CodeAlpha_EmotionRecognitionFromSpeech/ # Task 3: Audio MFCC + CNN/LSTM Emotion Classifier
-    └── CodeAlpha_HandwrittenCharacterRecognition/ # Task 4: CNN OCR & Handwriting Segmentation
-```
+### Artificial Intelligence (`/Artificial Intelligence`)
+
+1. **Language Translation Tool** (`CodeAlpha_LanguageTranslationTool`)  
+   A Flask web application that translates text across 100+ languages using `deep-translator` (Google Translate). Includes auto-language detection, browser-based text-to-speech, and copy/swap features.
+
+2. **FAQ Chatbot** (`CodeAlpha_FAQChatbot`)  
+   A customer support chatbot for an e-commerce store with both web and terminal interfaces. Uses NLTK for text preprocessing (tokenization, stop-word filtering, lemmatization), scikit-learn for TF-IDF vectorization, and cosine similarity to find matching answers or make suggestions.
+
+3. **Music Generation with AI** (`CodeAlpha_MusicGenerationAI`)  
+   An LSTM recurrent neural network built in Keras/PyTorch that learns musical patterns from MIDI files (Bach chorales). Given a starting seed phrase, it generates new polyphonic chord progressions and saves the result as both `.mid` and `.wav` audio.
+
+4. **Object Detection and Tracking** (`CodeAlpha_ObjectDetectionTracking`)  
+   Real-time video tracking that combines YOLOv8 object detection with a SORT tracker (Kalman Filter + Hungarian matching algorithm). Assigns persistent IDs to objects across frames even through temporary occlusions.
 
 ---
 
-## 🚀 Projects Overview & Showcase
+### Cybersecurity (`/Cybersecurity`)
 
-### 1. Artificial Intelligence Track
+1. **Basic Network Sniffer** (`CodeAlpha_BasicNetworkSniffer`)  
+   A packet sniffer written in Python using Scapy. Captures and parses packets layer-by-layer (Ethernet, IPv4/IPv6, TCP/UDP, ICMP, DNS, HTTP, and TLS headers), with optional hex/ASCII payload previews and traffic breakdown statistics.
 
-| Task | Project | Stack | Description | Status |
-|:---:|:---|:---|:---|:---:|
-| **01** | [`CodeAlpha_LanguageTranslationTool`](./Artificial%20Intelligence/CodeAlpha_LanguageTranslationTool) | Flask, Deep-Translator, JS | Real-time multi-language translation platform with modern responsive web UI. | Verified (11 tests) |
-| **02** | [`CodeAlpha_FAQChatbot`](./Artificial%20Intelligence/CodeAlpha_FAQChatbot) | Flask, NLTK, Scikit-Learn | Intent-aware customer support chatbot using TF-IDF and cosine similarity. | Verified (31 tests) |
-| **03** | [`CodeAlpha_MusicGenerationAI`](./Artificial%20Intelligence/CodeAlpha_MusicGenerationAI) | Keras 3, PyTorch/TF, music21 | Deep LSTM neural network composing novel polyphonic piano pieces into MIDI and synthesized WAV audio. | Verified (13 tests) |
-| **04** | [`CodeAlpha_ObjectDetectionTracking`](./Artificial%20Intelligence/CodeAlpha_ObjectDetectionTracking) | YOLOv8, OpenCV, SORT | Real-time video multi-object detection and tracking using Kalman filtering and Hungarian association. | Verified (19 tests) |
+2. **Network Intrusion Detection System** (`CodeAlpha_NetworkIntrusionDetectionSystem`)  
+   Custom Suricata 7 detection rules for port scanning, ping sweeps, SSH brute force, cleartext FTP/Telnet, and web attacks (SQL injection, directory traversal). Includes a Python script to synthesize realistic attack traffic into a replayable `.pcap` and an automated responder script.
 
----
+3. **Phishing Awareness Training** (`CodeAlpha_PhishingAwarenessTraining`)  
+   An interactive web application designed for employee security training. Users inspect simulated emails to find red flags (lookalike sender domains, mismatched links, urgent tone) and complete a scenario quiz with immediate explanations.
 
-### 2. Cybersecurity Track
-
-| Task | Project | Stack | Description | Status |
-|:---:|:---|:---|:---|:---:|
-| **01** | [`CodeAlpha_BasicNetworkSniffer`](./Cybersecurity/CodeAlpha_BasicNetworkSniffer) | Python 3, Scapy | Live and offline network packet sniffer decoding Ethernet, IPv4/v6, TCP/UDP, ICMP, DNS, and HTTP/TLS. | Verified (6 tests) |
-| **02** | [`CodeAlpha_NetworkIntrusionDetectionSystem`](./Cybersecurity/CodeAlpha_NetworkIntrusionDetectionSystem) | Scapy, Suricata, Matplotlib | Signature-based network intrusion detection system with synthetic attack generation and incident response. | Verified (2 tests) |
-| **03** | [`CodeAlpha_PhishingAwarenessTraining`](./Cybersecurity/CodeAlpha_PhishingAwarenessTraining) | HTML5, Modern CSS, Vanilla JS | Interactive training simulator teaching employees to detect email red flags, spear phishing, and spoofed links. | Verified (2 tests) |
-| **04** | [`CodeAlpha_SecureCodingReview`](./Cybersecurity/CodeAlpha_SecureCodingReview) | Python, Flask, Bandit, Pytest | Complete security audit of NoteBox API uncovering 13 vulnerabilities (SQLi, RCE, Deserialization, SSRF, IDOR) with side-by-side hardened fixes. | Verified (26 tests) |
+4. **Secure Code Review** (`CodeAlpha_SecureCodingReview`)  
+   A security review of a sample Flask note-taking API ("NoteBox"). Covers 13 identified vulnerabilities (SQLi, command injection, insecure deserialization, IDOR, SSRF, CSRF, etc.), each backed by an automated exploit test, with hardened side-by-side fixes in `secure_app/`.
 
 ---
 
-### 3. Machine Learning Track
+### Machine Learning (`/Machine Learning`)
 
-| Task | Project | Stack | Description | Status |
-|:---:|:---|:---|:---|:---:|
-| **01** | [`CodeAlpha_CreditScoringModel`](./Machine%20Learning/CodeAlpha_CreditScoringModel) | Scikit-Learn, Pandas, Joblib | Credit default prediction pipeline comparing Logistic Regression, Random Forest, and Gradient Boosting (ROC-AUC: 0.786) with credit scorecards. | Verified (3 tests) |
-| **02** | [`CodeAlpha_DiseasePrediction`](./Machine%20Learning/CodeAlpha_DiseasePrediction) | Scikit-Learn, XGBoost, Pandas | Predictive diagnostic models trained across 3 distinct UCI clinical datasets (Heart Disease, Diabetes, Breast Cancer) achieving up to 0.995 ROC-AUC. | Verified (2 tests) |
-| **03** | [`CodeAlpha_EmotionRecognitionFromSpeech`](./Machine%20Learning/CodeAlpha_EmotionRecognitionFromSpeech) | Librosa, SoundFile, NumPy | Speech emotion classification extracting 120-dimensional perceptual acoustic features (MFCCs, deltas, delta-deltas) with audio augmentation. | Verified (2 tests) |
-| **04** | [`CodeAlpha_HandwrittenCharacterRecognition`](./Machine%20Learning/CodeAlpha_HandwrittenCharacterRecognition) | OpenCV, NumPy, SciPy, Pillow | Computer vision OCR pipeline performing Otsu binarization, bounding-box segmentation, and MNIST/EMNIST character recognition. | Verified (4 tests) |
+1. **Credit Scoring Model** (`CodeAlpha_CreditScoringModel`)  
+   Predicts loan default probability using 6 months of customer payment records and bills (UCI Default of Credit Card Clients dataset). Evaluates Logistic Regression, Decision Tree, Random Forest, and Gradient Boosting, and maps default risk to a standard 300–850 credit scorecard.
 
----
+2. **Disease Prediction from Medical Data** (`CodeAlpha_DiseasePrediction`)  
+   Diagnostic machine learning pipelines across three UCI benchmark datasets: Heart Disease (Statlog), Diabetes (Pima Indians), and Breast Cancer (Wisconsin Diagnostic). Compares algorithms (SVM, Random Forest, XGBoost) and handles clinical feature preprocessing.
 
-## 🧪 Master Test Runner
+3. **Emotion Recognition from Speech** (`CodeAlpha_EmotionRecognitionFromSpeech`)  
+   Speech emotion classifier that extracts 120 acoustic features (40 MFCCs plus delta and delta-delta derivatives) using Librosa. Includes audio data augmentation (noise, pitch shift, time stretch) and a synthetic demo dataset generator for smoke testing.
 
-This monorepo includes a central verification engine [`verify_all.py`](./verify_all.py) that automatically validates all 12 projects:
-
-```bash
-python verify_all.py
-```
-
-### Verification Output:
-```text
-================================================================================
-  CODEALPHA INTERNSHIP PROJECTS - MASTER VERIFICATION RUNNER
-================================================================================
-Repository Root: C:\Users\Admin\Documents\GitHub\CodeAlpha Internship Projects
-
-Track                     Project                                  Status     Tests    Time
-------------------------------------------------------------------------------------------
-Artificial Intelligence   CodeAlpha_LanguageTranslationTool        PASSED     11       0.94s
-Artificial Intelligence   CodeAlpha_FAQChatbot                     PASSED     31       4.72s
-Artificial Intelligence   CodeAlpha_MusicGenerationAI              PASSED     13       7.19s
-Artificial Intelligence   CodeAlpha_ObjectDetectionTracking        PASSED     19       1.35s
-Cybersecurity             CodeAlpha_BasicNetworkSniffer            PASSED     6        1.43s
-Cybersecurity             CodeAlpha_NetworkIntrusionDetectionSystem PASSED     2        1.44s
-Cybersecurity             CodeAlpha_PhishingAwarenessTraining      PASSED     2        0.67s
-Cybersecurity             CodeAlpha_SecureCodingReview             PASSED     26       6.69s
-Machine Learning          CodeAlpha_CreditScoringModel             PASSED     3        2.29s
-Machine Learning          CodeAlpha_DiseasePrediction              PASSED     2        2.20s
-Machine Learning          CodeAlpha_EmotionRecognitionFromSpeech   PASSED     2        2.20s
-Machine Learning          CodeAlpha_HandwrittenCharacterRecognition PASSED     4        0.95s
-------------------------------------------------------------------------------------------
-Total Projects Verified: 12/12
-Total Automated Tests Passed: 121
-Total Failures: 0
-Total Duration: 32.08s
-================================================================================
-
-All 12 CodeAlpha projects are healthy and fully verified!
-```
+4. **Handwritten Character Recognition** (`CodeAlpha_HandwrittenCharacterRecognition`)  
+   Computer vision OCR pipeline that takes raw images of handwriting, applies Otsu binarization and center-of-mass alignment into normalized $28 \times 28$ tensors, and segments multi-character images into individual letter bounding boxes.
 
 ---
 
-## 💻 Quickstart & Setup
+## Setup & Running
 
-### Prerequisites
-- Python 3.10 – 3.13
+### Requirements
+- Python 3.10 to 3.13
 - Git
 
-### Installation
-Clone the repository:
+### Quick Start
+
 ```bash
 git clone https://github.com/YTxFSGAMERz/CodeAlpha-Internship-Projects.git
 cd CodeAlpha-Internship-Projects
-```
 
-Create and activate a virtual environment:
-```bash
+# Set up virtual environment
 python -m venv .venv
 
-# Windows:
+# Activate on Windows:
 .venv\Scripts\activate
-
-# Linux / macOS:
+# Activate on Linux / macOS:
 source .venv/bin/activate
-```
 
-Install common development dependencies:
-```bash
+# Install dependencies for all tracks
 pip install -r requirements.txt
 ```
-*(Or navigate into any project folder to install its specific `requirements.txt`).*
+
+Each individual project also has its own `requirements.txt` and a `README.md` with detailed options.
 
 ---
 
-## 📹 Video Demonstration & Submission Guide
+## Running the Tests
 
-For each task submitted to CodeAlpha:
-1. **Walkthrough Video**: Record a 2–4 minute video demonstrating:
-   - Problem statement & dataset / protocol explanation
-   - Live code execution and UI demo
-   - Model metrics / attack reproduction results
-   - Limitations and production improvements
-2. **LinkedIn Post**: Share your achievements tagging `@CodeAlpha` with your demo video and GitHub link.
-3. **Submission Form**: Submit via the official CodeAlpha portal / WhatsApp group link.
+To run the automated tests across all 12 projects:
 
-Detailed demonstration commands for every single project are documented in the [Walkthrough Guide](./walkthrough.md).
+```bash
+python run_all_tests.py
+```
+
+All 12 projects currently pass their test suites (121 tests total).
 
 ---
 
-## 👤 Author
-- **Farhan** ([@YTxFSGAMERz](https://github.com/YTxFSGAMERz))
-- CodeAlpha Internship Program
+## Submission & Demos
+
+For CodeAlpha task submissions, each project includes:
+- Source code with explanatory comments
+- README explaining how the approach works and how to run it
+- Automated tests or sample scripts for live demonstration
+
+See the project READMEs and the included PDF instruction sheets in each domain folder for details on recording demo walkthrough videos.
+
+---
+
+## Author
+
+- **Farhan Shaikh**
+- GitHub: [@YTxFSGAMERz](https://github.com/YTxFSGAMERz)
