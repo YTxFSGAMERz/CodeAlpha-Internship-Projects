@@ -28,14 +28,40 @@ WINDOW = "Object detection and tracking (q to quit)"
 
 def open_source(source: str) -> cv2.VideoCapture:
     """A number means a webcam, anything else is a video file or stream URL."""
-    capture = cv2.VideoCapture(int(source) if source.isdigit() else source)
-    if not capture.isOpened():
-        if source.isdigit():
+    if source.isdigit():
+        index = int(source)
+        try:
+            cv2.utils.logging.setLogLevel(cv2.utils.logging.LOG_LEVEL_ERROR)
+        except Exception:
+            pass
+
+        # Try DirectShow on Windows to access the camera cleanly without ffmpeg warnings
+        capture = cv2.VideoCapture(index, cv2.CAP_DSHOW)
+        if not capture.isOpened():
+            capture = cv2.VideoCapture(index)
+
+        if not capture.isOpened():
+            sample = Path(__file__).parent / "sample.mp4"
+            if sample.is_file():
+                print(f"[!] No webcam detected at index #{source}. Automatically running on bundled sample: {sample.name}\n")
+                return cv2.VideoCapture(str(sample))
             raise SystemExit(
                 f"Could not open webcam #{source}. If no camera is available on this machine, "
-                f"pass a video file instead:  python detect_track.py --source your_video.mp4"
+                f"pass a video file instead:  python detect_track.py --source sample.mp4"
             )
-        raise SystemExit(f"Could not open the video file or stream: {source}")
+        return capture
+
+    video_path = Path(source)
+    if not video_path.is_file():
+        alt_path = Path(__file__).parent / source
+        if alt_path.is_file():
+            video_path = alt_path
+
+    capture = cv2.VideoCapture(str(video_path))
+    if not capture.isOpened():
+        sample = Path(__file__).parent / "sample.mp4"
+        hint = f" (Try using the bundled sample: python detect_track.py --source sample.mp4)" if sample.is_file() else ""
+        raise SystemExit(f"Could not open the video file or stream: {source}{hint}")
     return capture
 
 

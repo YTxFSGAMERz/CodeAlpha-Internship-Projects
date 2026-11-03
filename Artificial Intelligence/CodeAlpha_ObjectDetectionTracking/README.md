@@ -32,12 +32,12 @@ pip install -r requirements.txt
 `requirements.txt` installs PyTorch through Ultralytics, so the first install is large (a few hundred MB to a few GB, depending on your system). The YOLO weights (`yolov8n.pt`, about 6 MB) are downloaded automatically the first time you run the program.
 
 ```bash
-python detect_track.py                                   # webcam 0
-python detect_track.py --source my_video.mp4             # video file
-python detect_track.py --source my_video.mp4 --save result.mp4 --no-show
-python detect_track.py --classes person car --trails     # only people and cars, with paths
-python detect_track.py --model yolov8s.pt --conf 0.5     # bigger model, stricter threshold
-python detect_track.py --tracker deepsort                # needs: pip install deep-sort-realtime
+python detect_track.py                                   # webcam (auto-uses bundled sample.mp4 if no camera)
+python detect_track.py --source sample.mp4               # bundled test video
+python detect_track.py --source sample.mp4 --trails      # with motion trails
+python detect_track.py --source sample.mp4 --save result.mp4 --no-show
+python detect_track.py --classes person bus              # only track specific classes
+python detect_track.py --tracker deepsort                # Deep SORT appearance tracker
 ```
 
 Press **q** or **Esc** in the video window to quit. When the program ends it prints how many different objects it tracked.
