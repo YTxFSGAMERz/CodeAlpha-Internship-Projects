@@ -31,8 +31,24 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 COMMENT = "nids-responder"
 
 
+def ensure_eve_log(path):
+    """Ensure eve.json exists; auto-generate demo events if not present."""
+    if not os.path.exists(path):
+        print(f"  [!] {path} not found. Generating demo alert log from attack capture...")
+        try:
+            from generate_test_traffic import write_demo_eve_log
+            write_demo_eve_log(path)
+        except Exception:
+            try:
+                import scripts.generate_test_traffic as gtt
+                gtt.write_demo_eve_log(path)
+            except Exception:
+                pass
+
+
 def read_events(path, follow, from_start):
     """Yield one parsed JSON event per line; with follow=True keep waiting for new lines."""
+    ensure_eve_log(path)
     buffer = ""
     with open(path, encoding="utf-8") as fh:
         if follow and not from_start:

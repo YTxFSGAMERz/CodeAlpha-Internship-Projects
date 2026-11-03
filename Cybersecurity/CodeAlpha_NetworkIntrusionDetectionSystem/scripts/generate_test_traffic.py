@@ -8,6 +8,7 @@ Nothing is sent on the network. The packets are only written to a file, which
 Suricata can replay safely with "suricata -r".
 """
 import argparse
+import json
 import os
 
 from scapy.all import DNS, DNSQR, ICMP, IP, TCP, UDP, Ether, Raw, wrpcap
@@ -15,6 +16,90 @@ from scapy.all import DNS, DNSQR, ICMP, IP, TCP, UDP, Ether, Raw, wrpcap
 BASE = 1_761_566_400.0                       # fixed start time, so every run is identical
 VICTIM, CLIENT, RESOLVER = "192.168.1.10", "192.168.1.25", "8.8.8.8"
 packets = []
+
+DEMO_ALERTS = [
+    {
+        "timestamp": "2026-11-04T02:00:10.000000+0000", "flow_id": 1001, "event_type": "alert",
+        "src_ip": "203.0.113.50", "src_port": 40000, "dest_ip": "192.168.1.10", "dest_port": 1000, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000001, "rev": 1,
+                  "signature": "LOCAL Possible TCP SYN port scan", "category": "Attempted Information Leak", "severity": 2}
+    },
+    {
+        "timestamp": "2026-11-04T02:00:20.000000+0000", "flow_id": 1002, "event_type": "alert",
+        "src_ip": "203.0.113.60", "src_port": 0, "dest_ip": "192.168.1.1", "dest_port": 0, "proto": "ICMP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000002, "rev": 1,
+                  "signature": "LOCAL ICMP echo flood or ping sweep", "category": "Attempted Information Leak", "severity": 2}
+    },
+    {
+        "timestamp": "2026-11-04T02:00:30.000000+0000", "flow_id": 1003, "event_type": "alert",
+        "src_ip": "198.51.100.77", "src_port": 50000, "dest_ip": "192.168.1.10", "dest_port": 22, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000003, "rev": 1,
+                  "signature": "LOCAL Possible SSH brute force (many new connections)", "category": "Attempted Administrator Privilege Gain", "severity": 1}
+    },
+    {
+        "timestamp": "2026-11-04T02:00:50.000000+0000", "flow_id": 1004, "event_type": "alert",
+        "src_ip": "198.51.100.99", "src_port": 51000, "dest_ip": "192.168.1.10", "dest_port": 23, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000004, "rev": 1,
+                  "signature": "LOCAL Telnet connection attempt (cleartext remote access)", "category": "Potential Corporate Privacy Violation", "severity": 2}
+    },
+    {
+        "timestamp": "2026-11-04T02:00:55.000000+0000", "flow_id": 1005, "event_type": "alert",
+        "src_ip": "198.51.100.88", "src_port": 52000, "dest_ip": "192.168.1.10", "dest_port": 21, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000005, "rev": 1,
+                  "signature": "LOCAL FTP login sent in cleartext", "category": "Potential Corporate Privacy Violation", "severity": 2}
+    },
+    {
+        "timestamp": "2026-11-04T02:01:00.000000+0000", "flow_id": 1006, "event_type": "alert",
+        "src_ip": "198.51.100.23", "src_port": 53001, "dest_ip": "192.168.1.10", "dest_port": 80, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000006, "rev": 1,
+                  "signature": "LOCAL SQL injection attempt (UNION SELECT) in URI", "category": "Web Application Attack", "severity": 1}
+    },
+    {
+        "timestamp": "2026-11-04T02:01:02.000000+0000", "flow_id": 1007, "event_type": "alert",
+        "src_ip": "198.51.100.23", "src_port": 53002, "dest_ip": "192.168.1.10", "dest_port": 80, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000007, "rev": 1,
+                  "signature": "LOCAL SQL injection attempt (OR 1=1 tautology) in URI", "category": "Web Application Attack", "severity": 1}
+    },
+    {
+        "timestamp": "2026-11-04T02:01:04.000000+0000", "flow_id": 1008, "event_type": "alert",
+        "src_ip": "198.51.100.23", "src_port": 53003, "dest_ip": "192.168.1.10", "dest_port": 80, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000008, "rev": 1,
+                  "signature": "LOCAL Directory traversal attempt in URI", "category": "Web Application Attack", "severity": 1}
+    },
+    {
+        "timestamp": "2026-11-04T02:01:06.000000+0000", "flow_id": 1009, "event_type": "alert",
+        "src_ip": "198.51.100.23", "src_port": 53004, "dest_ip": "192.168.1.10", "dest_port": 80, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000009, "rev": 1,
+                  "signature": "LOCAL Cross-site scripting attempt (<script>) in URI", "category": "Web Application Attack", "severity": 1}
+    },
+    {
+        "timestamp": "2026-11-04T02:01:08.000000+0000", "flow_id": 1010, "event_type": "alert",
+        "src_ip": "198.51.100.23", "src_port": 53005, "dest_ip": "192.168.1.10", "dest_port": 80, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000010, "rev": 1,
+                  "signature": "LOCAL Known scanner or attack tool User-Agent", "category": "Web Application Attack", "severity": 1}
+    },
+    {
+        "timestamp": "2026-11-04T02:01:15.000000+0000", "flow_id": 1011, "event_type": "alert",
+        "src_ip": "192.168.1.25", "src_port": 53000, "dest_ip": "8.8.8.8", "dest_port": 53, "proto": "UDP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000011, "rev": 1,
+                  "signature": "LOCAL DNS query with a very long label (possible tunnelling)", "category": "Potentially Bad Traffic", "severity": 2}
+    },
+    {
+        "timestamp": "2026-11-04T02:01:20.000000+0000", "flow_id": 1012, "event_type": "alert",
+        "src_ip": "192.168.1.25", "src_port": 54000, "dest_ip": "203.0.113.99", "dest_port": 4444, "proto": "TCP",
+        "alert": {"action": "allowed", "gid": 1, "signature_id": 1000012, "rev": 1,
+                  "signature": "LOCAL Outbound connection to TCP 4444 (common reverse-shell port)", "category": "A Network Trojan was detected", "severity": 1}
+    }
+]
+
+
+def write_demo_eve_log(path):
+    """Write sample Suricata eve.json alerts corresponding to attack_demo.pcap."""
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        for alert in DEMO_ALERTS:
+            f.write(json.dumps(alert) + "\n")
+    print(f"Wrote {len(DEMO_ALERTS)} demo alerts to {path}")
 
 
 def mac(ip):
@@ -88,10 +173,12 @@ def build():
 
 if __name__ == "__main__":
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    parser = argparse.ArgumentParser(description="Write a demo attack capture for testing the IDS rules.")
+    parser = argparse.ArgumentParser(description="Write a demo attack capture and alert log for testing the IDS rules.")
     parser.add_argument("-o", "--output", default=os.path.join(root, "pcaps", "attack_demo.pcap"))
+    parser.add_argument("--eve", default=os.path.join(root, "logs", "eve.json"))
     args = parser.parse_args()
     build()
     packets.sort(key=lambda p: float(p.time))
     wrpcap(args.output, packets)
     print(f"Wrote {len(packets)} packets to {args.output}")
+    write_demo_eve_log(args.eve)

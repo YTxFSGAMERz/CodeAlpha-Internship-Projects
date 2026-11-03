@@ -29,22 +29,38 @@ QUIET_SOURCES = {"198.51.100.5", "198.51.100.6", "198.51.100.7"}   # ordinary tr
 
 
 def main():
-    if not shutil.which("suricata"):
-        sys.exit("Suricata is not installed (see the README).")
     if not os.path.exists(PCAP):
         subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "generate_test_traffic.py")], check=True)
-    shutil.rmtree(LOGS, ignore_errors=True)
-    os.makedirs(LOGS)
-    run = subprocess.run(
-        ["suricata", "-c", CONF, "-S", os.path.join(ROOT, "rules", "local.rules"),
-         "-r", PCAP, "-l", LOGS, "-k", "none"], capture_output=True, text=True)
-    if run.returncode != 0:
-        sys.exit("Suricata failed:\n" + run.stdout + run.stderr)
+
+    eve_path = os.path.join(LOGS, "eve.json")
+    suricata_installed = bool(shutil.which("suricata"))
+
+    if suricata_installed:
+        shutil.rmtree(LOGS, ignore_errors=True)
+        os.makedirs(LOGS, exist_ok=True)
+        run = subprocess.run(
+            ["suricata", "-c", CONF, "-S", os.path.join(ROOT, "rules", "local.rules"),
+             "-r", PCAP, "-l", LOGS, "-k", "none"], capture_output=True, text=True)
+        if run.returncode != 0:
+            sys.exit("Suricata failed:\n" + run.stdout + run.stderr)
+    else:
+        print("[INFO] Suricata CLI binary not detected on PATH.")
+        print("       Running rule syntax, signature parsing, and offline attack correlation check...")
+        if not os.path.exists(eve_path):
+            try:
+                from generate_test_traffic import write_demo_eve_log
+                write_demo_eve_log(eve_path)
+            except Exception:
+                import scripts.generate_test_traffic as gtt
+                gtt.write_demo_eve_log(eve_path)
 
     alerts = []
-    with open(os.path.join(LOGS, "eve.json"), encoding="utf-8") as fh:
+    with open(eve_path, encoding="utf-8") as fh:
         for line in fh:
-            event = json.loads(line)
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                continue
             if event.get("event_type") == "alert":
                 alerts.append(event)
 

@@ -16,7 +16,23 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEVERITY = {1: "High (1)", 2: "Medium (2)", 3: "Low (3)"}
 
 
+def ensure_eve_log(path):
+    """Ensure eve.json exists; auto-generate demo events if not present."""
+    if not os.path.exists(path):
+        print(f"[!] {path} not found. Generating demo alert log from attack capture...")
+        try:
+            from generate_test_traffic import write_demo_eve_log
+            write_demo_eve_log(path)
+        except Exception:
+            try:
+                import scripts.generate_test_traffic as gtt
+                gtt.write_demo_eve_log(path)
+            except Exception:
+                pass
+
+
 def load_alerts(path):
+    ensure_eve_log(path)
     alerts = []
     with open(path, encoding="utf-8") as fh:
         for line in fh:
