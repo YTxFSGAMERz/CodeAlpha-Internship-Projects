@@ -16,6 +16,7 @@ import time
 from collections import Counter
 from pathlib import Path
 
+import numpy as np
 import cv2
 
 from deepsort_tracker import DeepSortTracker

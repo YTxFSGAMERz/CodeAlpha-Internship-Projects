@@ -5,8 +5,8 @@ from __future__ import annotations
 import colorsys
 from collections import deque
 
-import cv2
 import numpy as np
+import cv2
 
 FONT = cv2.FONT_HERSHEY_SIMPLEX
 
