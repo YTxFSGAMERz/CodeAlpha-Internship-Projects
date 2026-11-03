@@ -16,8 +16,20 @@ Reference: Bewley et al., "Simple Online and Realtime Tracking", 2016.
 
 from __future__ import annotations
 
+import os
+import sys
 from collections import defaultdict
 from dataclasses import dataclass
+
+if sys.platform == "win32":
+    for _dir in sys.path:
+        _libs = os.path.join(_dir, "numpy.libs")
+        if os.path.isdir(_libs):
+            try:
+                os.add_dll_directory(_libs)
+            except Exception:
+                pass
+            os.environ["PATH"] = _libs + os.pathsep + os.environ.get("PATH", "")
 
 import numpy as np
 from scipy.optimize import linear_sum_assignment

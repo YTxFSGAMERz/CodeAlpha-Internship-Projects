@@ -2,7 +2,20 @@
 
 from __future__ import annotations
 
+import os
+import sys
 from pathlib import Path
+
+if sys.platform == "win32":
+    for _dir in sys.path:
+        _libs = os.path.join(_dir, "numpy.libs")
+        if os.path.isdir(_libs):
+            try:
+                os.add_dll_directory(_libs)
+            except Exception:
+                pass
+            os.environ["PATH"] = _libs + os.pathsep + os.environ.get("PATH", "")
+
 import numpy as np
 
 
