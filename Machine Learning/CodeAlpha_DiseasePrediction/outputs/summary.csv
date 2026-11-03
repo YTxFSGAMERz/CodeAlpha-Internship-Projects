@@ -1,0 +1,4 @@
+dataset,best_model,accuracy,precision,recall,f1,roc_auc
+Heart disease (UCI Statlog Heart),SVM,0.8519,0.8077,0.875,0.84,0.9069
+Diabetes (Pima Indians),SVM,0.7078,0.6,0.5,0.5455,0.8096
+Breast cancer (Wisconsin Diagnostic),SVM,0.9737,1.0,0.9286,0.963,0.9964

@@ -1,0 +1,25 @@
+{
+  "dataset": "Breast cancer (Wisconsin Diagnostic)",
+  "best_model": "SVM",
+  "test_metrics": {
+    "accuracy": 0.9737,
+    "precision": 1.0,
+    "recall": 0.9286,
+    "specificity": 1.0,
+    "f1": 0.963,
+    "roc_auc": 0.9964,
+    "tn": 72,
+    "fp": 0,
+    "fn": 3,
+    "tp": 39
+  },
+  "top_features": [
+    "worst_symmetry",
+    "worst_texture",
+    "worst_concavity",
+    "mean_concavity",
+    "mean_concave_points"
+  ],
+  "n_train": 455,
+  "n_test": 114
+}

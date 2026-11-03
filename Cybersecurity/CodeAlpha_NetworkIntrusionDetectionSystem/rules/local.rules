@@ -1,0 +1,23 @@
+# Local detection rules for the CodeAlpha Task 4 NIDS (Suricata 7 syntax).
+# SIDs 1000001-1000012 are in the range reserved for local rules.
+# $HOME_NET is the network being protected; $EXTERNAL_NET is everything else.
+
+# ---- Reconnaissance --------------------------------------------------------
+alert tcp $EXTERNAL_NET any -> $HOME_NET any (msg:"LOCAL Possible TCP SYN port scan"; flags:S; threshold:type both, track by_src, count 20, seconds 10; classtype:attempted-recon; sid:1000001; rev:1;)
+alert icmp $EXTERNAL_NET any -> $HOME_NET any (msg:"LOCAL ICMP echo flood or ping sweep"; itype:8; threshold:type both, track by_src, count 10, seconds 5; classtype:attempted-recon; sid:1000002; rev:1;)
+
+# ---- Remote access abuse ---------------------------------------------------
+alert tcp $EXTERNAL_NET any -> $HOME_NET 22 (msg:"LOCAL Possible SSH brute force (many new connections)"; flow:to_server; flags:S; threshold:type both, track by_src, count 5, seconds 60; classtype:attempted-admin; sid:1000003; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 23 (msg:"LOCAL Telnet connection attempt (cleartext remote access)"; flow:to_server; flags:S; classtype:policy-violation; sid:1000004; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 21 (msg:"LOCAL FTP login sent in cleartext"; flow:established,to_server; content:"USER "; depth:5; flowbits:isnotset,local.ftp.user; flowbits:set,local.ftp.user; classtype:policy-violation; sid:1000005; rev:1;)
+
+# ---- Web attacks -----------------------------------------------------------
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg:"LOCAL SQL injection attempt (UNION SELECT) in URI"; flow:established,to_server; http.uri; content:"union"; nocase; content:"select"; nocase; distance:0; classtype:web-application-attack; sid:1000006; rev:1;)
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg:"LOCAL SQL injection attempt (OR 1=1 tautology) in URI"; flow:established,to_server; http.uri; pcre:"/('|%27)\s*or\s*('|%27)?\d+('|%27)?\s*=\s*('|%27)?\d+/i"; classtype:web-application-attack; sid:1000007; rev:1;)
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg:"LOCAL Directory traversal attempt in URI"; flow:established,to_server; http.uri.raw; pcre:"/(\.\.\/|%2e%2e(\/|%2f)|\.\.%2f)/i"; classtype:web-application-attack; sid:1000008; rev:1;)
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg:"LOCAL Cross-site scripting attempt (<script>) in URI"; flow:established,to_server; http.uri; content:"<script"; nocase; classtype:web-application-attack; sid:1000009; rev:1;)
+alert http $EXTERNAL_NET any -> $HOME_NET any (msg:"LOCAL Known scanner or attack tool User-Agent"; flow:established,to_server; http.user_agent; pcre:"/(sqlmap|nikto|masscan|gobuster|dirbuster|nmap scripting engine|wpscan)/i"; classtype:web-application-attack; sid:1000010; rev:1;)
+
+# ---- Suspicious activity from inside the network ---------------------------
+alert dns $HOME_NET any -> any any (msg:"LOCAL DNS query with a very long label (possible tunnelling)"; dns.query; pcre:"/^[^.]{50,}\./"; classtype:bad-unknown; sid:1000011; rev:1;)
+alert tcp $HOME_NET any -> $EXTERNAL_NET 4444 (msg:"LOCAL Outbound connection to TCP 4444 (common reverse-shell port)"; flow:to_server; flags:S; classtype:trojan-activity; sid:1000012; rev:1;)

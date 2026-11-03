@@ -1,0 +1,5 @@
+model,cv_roc_auc,cv_roc_auc_std,accuracy,precision,recall,specificity,f1,roc_auc,tn,fp,fn,tp,best_params
+Logistic Regression,0.9947,0.0055,0.9912,1.0,0.9762,1.0,0.988,0.9977,72,0,1,41,"{""C"": 0.1}"
+SVM,0.9948,0.0049,0.9737,1.0,0.9286,1.0,0.963,0.9964,72,0,3,39,"{""C"": 0.1, ""kernel"": ""linear""}"
+Random Forest,0.9898,0.0055,0.9737,1.0,0.9286,1.0,0.963,0.9977,72,0,3,39,"{""max_depth"": null, ""min_samples_leaf"": 1, ""n_estimators"": 200}"
+XGBoost,0.9948,0.0041,0.9737,1.0,0.9286,1.0,0.963,0.9894,72,0,3,39,"{""learning_rate"": 0.1, ""max_depth"": 2, ""n_estimators"": 300, ""subsample"": 0.8}"

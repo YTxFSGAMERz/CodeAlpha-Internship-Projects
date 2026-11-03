@@ -1,0 +1,10 @@
+# Network sniffer captures and logs
+*.pcap
+*.pcapng
+*.cap
+*.log
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/

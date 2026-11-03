@@ -1,0 +1,26 @@
+{
+  "classes": [
+    "angry",
+    "boredom",
+    "disgust",
+    "fear",
+    "happy",
+    "neutral",
+    "sad"
+  ],
+  "model": "cnn_lstm",
+  "split": "speaker",
+  "sample_rate": 22050,
+  "n_mfcc": 40,
+  "hop_length": 512,
+  "max_frames": 130,
+  "datasets": [
+    "emodb"
+  ],
+  "test_accuracy": 0.5965,
+  "test_uar": 0.5702,
+  "test_macro_f1": 0.547,
+  "train_clips": 317,
+  "augmented_copies": 0,
+  "epochs_trained": 50
+}

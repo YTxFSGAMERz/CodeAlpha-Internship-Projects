@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ store }} Help</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="shell">
+    <header class="head">
+      <h1>{{ store }} Help</h1>
+      <p>Ask about orders, delivery, returns, payments or your account.</p>
+    </header>
+
+    <div id="log" class="log" role="log" aria-live="polite" aria-label="Conversation"></div>
+
+    <form id="chat-form" class="composer" autocomplete="off">
+      <label class="visually-hidden" for="message">Your question</label>
+      <input id="message" name="message" type="text" maxlength="{{ max_chars }}"
+             placeholder="Ask about delivery, returns, payments..." autofocus>
+      <button type="submit" id="send" class="send" aria-label="Send question">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <path d="M5 12h14m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </form>
+    <p class="note">Answers come from the {{ store }} FAQ. {{ store }} is a made-up demo store.</p>
+  </div>
+
+  <script id="starters" type="application/json">{{ starters | tojson }}</script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

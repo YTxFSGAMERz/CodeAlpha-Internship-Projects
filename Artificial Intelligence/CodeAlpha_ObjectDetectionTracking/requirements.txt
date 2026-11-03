@@ -1,0 +1,8 @@
+ultralytics>=8.3        # YOLO detector (installs PyTorch)
+opencv-python>=4.8      # video input, drawing and the display window
+numpy>=1.26
+scipy>=1.11             # Hungarian algorithm used by the tracker
+pytest>=8.0
+
+# Optional - only for `--tracker deepsort`:
+# deep-sort-realtime>=1.3

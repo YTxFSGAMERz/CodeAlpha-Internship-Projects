@@ -1,0 +1,5 @@
+model,cv_roc_auc,test_roc_auc,test_pr_auc,threshold,accuracy,precision,recall,f1,precision@0.5,recall@0.5,f1@0.5,best_params
+Logistic Regression,0.7597,0.7558,0.5161,0.28,0.7756,0.4936,0.5778,0.5323,0.6894,0.3054,0.4233,"{""C"": 0.1}"
+Decision Tree,0.7631,0.7638,0.5265,0.25,0.7596,0.4673,0.6258,0.5351,0.7039,0.3384,0.457,"{""max_depth"": 5, ""min_samples_leaf"": 50}"
+Random Forest,0.7853,0.7788,0.5586,0.31,0.8046,0.5591,0.5485,0.5538,0.7133,0.3751,0.4917,"{""max_depth"": 12, ""min_samples_leaf"": 30}"
+Gradient Boosting,0.7859,0.7778,0.5596,0.26,0.7829,0.5078,0.5825,0.5426,0.7041,0.3723,0.4871,"{""l2_regularization"": 1.0, ""learning_rate"": 0.05, ""max_leaf_nodes"": 31}"

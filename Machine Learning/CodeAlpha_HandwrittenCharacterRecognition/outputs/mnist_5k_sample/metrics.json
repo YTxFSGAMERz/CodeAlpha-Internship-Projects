@@ -1,0 +1,11 @@
+{
+  "dataset": "mnist_5k_sample (5,000 real MNIST images: 3,600 train / 400 val / 1,000 test)",
+  "preprocess": {
+    "ink_size": 20,
+    "center_by_mass": true
+  },
+  "test_accuracy": 0.978,
+  "test_loss": 0.0772,
+  "epochs_trained": 15,
+  "train_images": 3600
+}

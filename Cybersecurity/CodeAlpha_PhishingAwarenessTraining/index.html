@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phishing Awareness Training</title>
+<style>
+:root{color-scheme:light dark;--bg:#eef2f6;--card:#fff;--ink:#13202b;--mute:#52606d;--line:#d3dce5;--pri:#0f6b73;--bad:#b3261e;--good:#17714a;--hot:#fff0b3}
+@media (prefers-color-scheme:dark){:root{--bg:#0e151c;--card:#16212b;--ink:#e7edf2;--mute:#a6b3be;--line:#2b3a47;--pri:#5cc8d1;--bad:#ff9189;--good:#72d6a3;--hot:#524610}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:58rem;margin:0 auto;padding:0 1rem}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.25;margin:0 0 .4rem}
+h1{font-size:clamp(1.8rem,5vw,2.6rem)}h2{font-size:1.6rem}h3{font-size:1.1rem}
+header{padding:2rem 0 1rem}header p{color:var(--mute);max-width:42rem;margin:.3rem 0 0}
+nav{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:5}
+nav .wrap{display:flex;gap:1.2rem;overflow-x:auto;padding:.6rem 1rem}
+nav a{color:var(--ink);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+nav a:hover{border-color:var(--pri)}
+section{padding:2rem 0 .5rem}
+a{color:var(--pri)}
+:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+button{font:inherit;cursor:pointer}
+.mute{color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1rem 1.2rem;margin:.8rem 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.8rem}
+.grid .card{margin:0}
+.mail{border:1px solid var(--line);border-radius:6px;background:var(--card);overflow:hidden}
+.mail .bar{padding:.7rem 1rem;border-bottom:1px solid var(--line);background:var(--bg);font-size:.92rem}
+.mail .body{padding:1rem}
+.mail p{margin:.5rem 0}
+.hot{all:unset;cursor:pointer;background:var(--hot);border-bottom:2px dashed var(--pri);padding:0 .2rem;border-radius:2px}
+.hot:focus-visible{outline:3px solid var(--pri)}
+.hot.seen{background:none;border-bottom:2px solid var(--good)}
+.fake{display:inline-block;background:var(--pri);color:var(--card);padding:.4rem 1rem;border-radius:5px;border:0}
+.fake.seen{background:var(--good)}
+#why{margin-top:.8rem;padding:.7rem 1rem;border-left:4px solid var(--pri);background:var(--card);min-height:4.5rem}
+input{font:15px ui-monospace,Consolas,monospace;width:100%;padding:.55rem .7rem;margin:.5rem 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.btn,.chip,.opt{border:1px solid var(--pri);border-radius:6px;padding:.4rem .9rem;margin:.15rem .25rem .15rem 0}
+.btn{background:var(--pri);color:var(--card)}
+.chip,.opt{background:none;color:var(--ink)}
+.opt.ok{border:2px solid var(--good);background:var(--good);color:var(--card)}
+.opt.no{border:2px solid var(--bad);background:var(--bad);color:var(--card)}
+.opt:disabled{cursor:default;opacity:.75}
+#res{padding-left:1.2rem}#res li{margin:.3rem 0}
+dt{font-weight:600;margin-top:.6rem}dd{margin:0;color:var(--mute)}
+details{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.7rem 1.2rem;margin:.6rem 0}
+summary{cursor:pointer;font-weight:600}
+footer{padding:2rem 0 3rem;color:var(--mute);font-size:.9rem}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>Phishing Awareness Training</h1>
+<p>A short hands-on module: find the red flags in a fake email, test a suspicious link, learn how attackers manipulate people, then check what you remember. Organisations in the examples are made up.</p>
+</div></header>
+<nav aria-label="Sections"><div class="wrap"><a href="#flags">Red flags</a><a href="#sites">Fake websites</a><a href="#tactics">Tactics</a><a href="#cases">Real cases</a><a href="#safe">Stay safe</a><a href="#quiz">Quiz</a></div></nav>
+<main class="wrap">
+
+<section id="flags">
+<h2>Find the red flags</h2>
+<p>Phishing is a message that pretends to be someone you trust so that you will click, open, pay or hand over a secret. This email looks routine. Select the six highlighted spots to see what gives it away. <span class="mute" id="count">0 of 6 found</span></p>
+<div class="mail">
+<div class="bar"><div><b>From:</b> Nova Bank Support &lt;<button class="hot" data-k="from">support@novabank-secure.top</button>&gt;</div>
+<div><b>Subject:</b> <button class="hot" data-k="subj">URGENT: your account will be suspended in 24 hours</button></div></div>
+<div class="body">
+<p><button class="hot" data-k="greet">Dear Customer,</button></p>
+<p>We noticed unusual sign-in activity on your account. To keep it open, confirm your identity now.</p>
+<p><button class="hot fake" data-k="link">Verify my account</button></p>
+<p>Please also open the attached form and send it back. Nova Bank <button class="hot" data-k="typo">Securty</button> Team</p>
+<p class="mute">Attachment: <button class="hot" data-k="file">Account_Form.html.zip</button></p>
+</div></div>
+<div id="why" role="status" aria-live="polite">Select a highlighted spot.</div>
+</section>
+
+<section id="sites">
+<h2>Check a link before you click</h2>
+<p>Read a web address from right to left. The registered domain is the name just before the first single slash: <code>verify-login.top</code> in <code>https://novabank.com.verify-login.top/secure</code>. Everything to its left is chosen by whoever owns that domain, so <code>novabank.com</code> there is only decoration. Fake sites copy a real login page exactly, and the padlock only means the connection is encrypted, not that the owner is honest.</p>
+<div class="card">
+<label for="u"><b>Link checker</b> <span class="mute">(a teaching aid that runs in your browser and sends nothing anywhere)</span></label>
+<input id="u" type="text" spellcheck="false" autocomplete="off" placeholder="Paste or type a link">
+<button class="btn" id="go">Check link</button>
+<span class="mute">Try an example:</span>
+<button class="chip" data-u="http://novabank.com.verify-login.top/secure">stacked name</button>
+<button class="chip" data-u="https://n0vabank-login.com/account">digit swap</button>
+<button class="chip" data-u="http://203.0.113.9/login">bare IP</button>
+<button class="chip" data-u="https://www.wikipedia.org/wiki/Phishing">ordinary link</button>
+<ul id="res" aria-live="polite"></ul>
+</div>
+</section>
+
+<section id="tactics">
+<h2>How attackers work on people</h2>
+<p>Technical tricks get a message into your inbox. Psychology gets it clicked. Most phishing leans on one of these levers.</p>
+<div class="grid">
+<div class="card"><h3>Urgency</h3><p>“Act within 24 hours or lose access.” Time pressure stops you from checking.</p></div>
+<div class="card"><h3>Authority</h3><p>“This is the CEO”, “this is the tax office”, “this is your bank's fraud team.” People comply with titles.</p></div>
+<div class="card"><h3>Fear</h3><p>“Suspicious login detected.” “Your parcel is held by customs.” Panic shortcuts judgment.</p></div>
+<div class="card"><h3>Greed and curiosity</h3><p>“You won a prize.” “See who viewed your photos.” A reward or a secret is the bait.</p></div>
+<div class="card"><h3>Trust and familiarity</h3><p>A hijacked colleague's account, or a message that names your real manager or a real invoice.</p></div>
+<div class="card"><h3>Helpfulness</h3><p>“I'm locked out, can you reset this for me?” Good people get used because they want to help.</p></div>
+</div>
+<h3 style="margin-top:1.4rem">Same tricks, different doors</h3>
+<dl class="card">
+<dt>Spear phishing and whaling</dt><dd>Messages written for one person or one senior executive, using details gathered from social media or earlier breaches.</dd>
+<dt>Smishing</dt><dd>The same lure by SMS or WhatsApp, usually with a short link.</dd>
+<dt>Vishing</dt><dd>Phone calls from a fake bank, helpdesk or government officer, often asking for an OTP.</dd>
+<dt>Quishing</dt><dd>A QR code on an email, poster or parking sticker that leads to a fake page.</dd>
+<dt>Business email compromise</dt><dd>A fake or hijacked executive or supplier email asking for a payment, gift cards or changed bank details.</dd>
+<dt>Clone phishing</dt><dd>A real earlier email copied, with its link or attachment swapped for a malicious one.</dd>
+</dl>
+</section>
+
+<section id="cases">
+<h2>Real cases</h2>
+<details><summary>RSA SecurID, 2011: one spreadsheet</summary><p>Attackers emailed two small groups of employees a message titled “2011 Recruitment plan” with an Excel attachment. Opening it exploited an unpatched Flash flaw and gave them a foothold, which led to the theft of information about RSA's SecurID authentication products. <b>Lesson:</b> one click by one person can open the door. Be wary of unexpected attachments and patch software promptly.</p></details>
+<details><summary>Fake invoices, 2013 to 2015: more than US$100 million</summary><p>A man set up a company named like a real hardware supplier and sent invoices to two large US technology companies (widely reported to be Google and Facebook), which paid out more than US$100 million in total. He was sentenced to five years in prison in 2019. <b>Lesson:</b> check any change of payment details with a call to a number you already trust, even when the invoice looks routine.</p></details>
+<details><summary>Twitter, 2020: a phone call</summary><p>Attackers phoned Twitter employees pretending to be internal IT and steered them to a fake login page. With the stolen access they reached internal admin tools and took over high-profile accounts to run a Bitcoin scam. Twitter said 130 accounts were targeted and 45 were used to tweet. <b>Lesson:</b> phone calls can be phishing too. Verify callers through an official channel.</p></details>
+<details><summary>Uber, 2022: approval fatigue</summary><p>An attacker with a contractor's stolen password triggered repeated multi-factor push notifications until the contractor approved one, then messaged them on WhatsApp pretending to be Uber IT. Uber said the attacker then reached several internal systems. <b>Lesson:</b> never approve a prompt you did not start. Phishing-resistant keys and number matching reduce this risk.</p></details>
+<details><summary>MGM Resorts, 2023: the help desk</summary><p>Attackers reportedly phoned the IT help desk, posed as an employee whose details were found online, and got access reset. Ransomware followed, and MGM later said the incident cost about US$100 million. <b>Lesson:</b> help desks need a strong identity check before resetting credentials.</p></details>
+<details><summary>Everyday pattern: KYC, refund and parcel-fee messages</summary><p>Texts and WhatsApp messages claim a KYC check is expiring, a refund is waiting or a parcel needs a small fee. The link opens a copy of a real bank or payment page. UPI “collect” requests work the same way: a PIN is only needed to send money, never to receive it.</p></details>
+<p class="mute">Summaries rely on public company statements and court or regulator documents. Check the originals for full detail.</p>
+</section>
+
+<section id="safe">
+<h2>Stay safe</h2>
+<div class="grid">
+<div class="card"><h3>Check with SLAM</h3><ul>
+<li><b>Sender:</b> read the full address and its domain.</li>
+<li><b>Links:</b> hover or long-press to see the real address. Type known sites yourself.</li>
+<li><b>Attachments:</b> do not open unexpected ones, especially .zip, .html or Office files that ask you to enable macros.</li>
+<li><b>Message:</b> look for pressure, threats, rewards, and requests for passwords, OTPs or payments.</li></ul></div>
+<div class="card"><h3>Build good habits</h3><ul>
+<li>Use a password manager. It will not fill a password on a look-alike domain.</li>
+<li>Turn on MFA, preferably an authenticator app, passkey or security key.</li>
+<li>Never share an OTP or PIN with anyone, including “bank staff”.</li>
+<li>Confirm unusual requests through a second channel, such as the number on your card.</li>
+<li>Keep your browser and system updated.</li></ul></div>
+<div class="card"><h3>If you already clicked</h3><ol>
+<li>Close the page and enter nothing more.</li>
+<li>If you typed a password, change it now, then change it anywhere you reused it.</li>
+<li>Reset MFA and sign out other sessions.</li>
+<li>Tell your IT or security team, or your bank, straight away.</li>
+<li>Watch your accounts for unusual activity.</li></ol></div>
+<div class="card"><h3>Report it</h3><p>Report suspicious email to your IT team. You can forward phishing emails to <a href="mailto:reportphishing@apwg.org">reportphishing@apwg.org</a>. In India, report financial fraud quickly at <a href="https://cybercrime.gov.in">cybercrime.gov.in</a> or call 1930.</p></div>
+</div>
+</section>
+
+<section id="quiz">
+<h2>Test yourself</h2>
+<p>Decide whether each message is phishing or legitimate. You get an explanation after every answer.</p>
+<div id="qbox"></div>
+<div id="result" class="card" aria-live="polite" hidden></div>
+</section>
+</main>
+<footer><div class="wrap">Built for the CodeAlpha Cyber Security Internship, Task 2. Use what you learn on real messages, and report anything suspicious.</div></footer>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+
+/* Red flags */
+const FLAGS={
+from:["The sender address","The display name says Nova Bank, but the address ends in novabank-secure.top, a domain the bank does not own. Display names are free text, so read the address behind them."],
+subj:["Pressure in the subject line","Deadlines and threats push you to act before you think. Real banks do not suspend accounts because an email went unanswered."],
+greet:["A generic greeting","“Dear Customer” means the sender does not know your name. Your bank does."],
+link:["A button that hides its destination","The text says “Verify my account”, but hovering would show novabank.verify-login.top. The real domain is verify-login.top, so this is not the bank. Open your bank by typing its address or using its app."],
+file:["An unexpected attachment","A .html.zip file can hide a fake login page or malware. Banks do not ask you to fill in and return forms like this."],
+typo:["Careless wording","“Securty” is misspelled. Many phishing emails have slips like this, but polished ones exist too, so a clean email proves nothing."]
+};
+const seen=new Set();
+$$(".hot").forEach(b=>b.addEventListener("click",()=>{
+  const [title,text]=FLAGS[b.dataset.k],why=$("#why"),s=document.createElement("strong");
+  b.classList.add("seen");seen.add(b.dataset.k);
+  s.textContent=title+". ";why.textContent="";why.append(s,text);
+  $("#count").textContent=seen.size+" of 6 found"+(seen.size===6?". Nicely spotted.":"");
+}));
+
+/* Link checker */
+const SHORT=["bit.ly","tinyurl.com","t.co","goo.gl","is.gd","cutt.ly","rb.gy","ow.ly"];
+const TLDS=["top","xyz","click","zip","tk","ml","gq","cf","icu","rest","buzz","cyou"];
+const WORDS=["login","signin","verify","secure","account","update","support","wallet","kyc","otp","refund","payment"];
+function analyse(raw){
+  let u;
+  try{u=new URL(/^[a-z][a-z0-9+.-]*:\/\//i.test(raw)?raw:"http://"+raw)}catch(e){return null}
+  const host=u.hostname.toLowerCase(),labels=host.split("."),reg=labels.slice(-2).join(".");
+  const ip=/^\d{1,3}(\.\d{1,3}){3}$/.test(host),tld=labels[labels.length-1],f=[];
+  if(u.protocol!=="https:")f.push("Not HTTPS: the connection is not encrypted. (HTTPS on its own never proves a site is honest.)");
+  if(ip)f.push("The address is a bare IP number instead of a name you can recognise.");
+  if(u.username)f.push("Text before an @ sign is ignored by the browser. The real destination is "+host+".");
+  if(host.includes("xn--"))f.push("Punycode (xn--) can disguise look-alike characters from other alphabets.");
+  if(!ip&&labels.length>3)f.push("Many sub-domains. Attackers stack names like bank.com.evil.top so the start looks familiar.");
+  const w=WORDS.filter(x=>host.includes(x));
+  if(w.length)f.push("Trigger words in the host name: "+w.join(", ")+".");
+  if((reg.match(/-/g)||[]).length>=2)f.push("Several hyphens in the registered domain, a common pattern in throwaway domains.");
+  if(!ip&&labels.some(l=>/[a-z][01345][a-z]/.test(l)||/[a-z]1$/.test(l)))f.push("Digits standing in for letters (0 for o, 1 for l, 4 for a).");
+  if(SHORT.includes(host))f.push("A link shortener hides the real destination. Preview it before opening.");
+  if(TLDS.includes(tld))f.push("The ."+tld+" ending is cheap and often abused. Not proof, but a reason to look harder.");
+  if(raw.length>75)f.push("A very long address can bury the part that matters.");
+  return {reg:ip?host:reg,f};
+}
+function runCheck(){
+  const raw=$("#u").value.trim(),ul=$("#res");ul.textContent="";
+  if(!raw)return;
+  const add=t=>{const li=document.createElement("li");li.textContent=t;ul.append(li)},r=analyse(raw);
+  if(!r){add("That does not look like a valid link.");return}
+  add("Likely registered domain: "+r.reg+" (an approximation; endings such as .co.uk use three parts).");
+  if(!r.f.length)add("No obvious red flags. That is not a guarantee: when it matters, type the address yourself or use the official app.");
+  r.f.forEach(add);
+}
+$("#go").addEventListener("click",runCheck);
+$("#u").addEventListener("keydown",e=>{if(e.key==="Enter")runCheck()});
+$$(".chip").forEach(c=>c.addEventListener("click",()=>{$("#u").value=c.dataset.u;runCheck()}));
+
+/* Quiz: p=1 means the message is phishing */
+const Q=[
+{t:"A text arrives: “Nova Bank: your account will be blocked today. Complete KYC now at http://novabank-kyc.top/update”",p:1,c:"smishing",e:"Phishing. It pairs a deadline with a link on an odd .top domain. Banks do not collect KYC through links in text messages. Open the bank's app or type its address yourself."},
+{t:"An IT notice says your password expires in 14 days. It has no link, tells you to change it from Settings in the portal you already use, and says IT will never ask for your password by email.",p:0,c:"spotting safe messages",e:"Legitimate. It creates no pressure, asks for nothing, and points you to a route you already know. Real notices look like this."},
+{t:"A caller says they are from your bank's fraud team and asks you to read out the OTP you just received so they can cancel a suspicious payment.",p:1,c:"vishing",e:"Phishing. An OTP approves a payment, it never cancels one. No genuine bank asks you to read it out. Hang up and call the number on your card."},
+{t:"You are sent to https://accounts.google.com.security-check.xyz/signin",p:1,c:"fake websites",e:"Phishing. Read right to left: the registered domain is security-check.xyz. The google.com part is just a sub-domain the attacker chose, and the padlock does not change that."},
+{t:"An email from your manager's personal Gmail address says: “In a meeting, can't talk. Buy 5 gift cards of ₹10,000 and send me the codes. I'll reimburse you today.”",p:1,c:"business email compromise",e:"Phishing. A new address, secrecy and gift cards are classic signs. Confirm by phone or in person using contact details you already have."},
+{t:"A WhatsApp message says your parcel is held and asks for a ₹25 re-delivery fee through a link.",p:1,c:"smishing",e:"Phishing. A small fee feels harmless, which is the point: the payment page captures your card or UPI details. Check delivery status in the courier's own app or site."},
+{t:"You bought something an hour ago. An email from the shop's usual address confirms the order number you can see in your account. It asks for no password or payment.",p:0,c:"spotting safe messages",e:"Legitimate. You expected it, the details match what you can verify yourself, and it asks for nothing. Context matters as much as appearance."},
+{t:"A buyer on a marketplace says they have sent your money and asks you to approve a UPI request and enter your PIN to “receive” it.",p:1,c:"UPI scams",e:"Phishing. You never enter a PIN to receive money. A PIN only authorises money leaving your account, so this is a collect-request scam."}
+];
+let score,done,missed;
+function buildQuiz(){
+  const box=$("#qbox");box.textContent="";score=0;done=0;missed=[];$("#result").hidden=true;
+  Q.forEach((q,i)=>{
+    const d=document.createElement("div"),p=document.createElement("p"),row=document.createElement("div"),fb=document.createElement("p");
+    d.className="card";p.textContent=(i+1)+". "+q.t;fb.setAttribute("aria-live","polite");
+    ["Phishing","Legitimate"].forEach((label,k)=>{
+      const b=document.createElement("button"),right=(k===0)===!!q.p;
+      b.className="opt";b.textContent=label;
+      b.addEventListener("click",()=>{
+        row.querySelectorAll("button").forEach(x=>x.disabled=true);
+        b.classList.add(right?"ok":"no");
+        fb.textContent=(right?"Correct. ":"Not quite. ")+q.e;
+        if(right)score++;else missed.push(q.c);
+        if(++done===Q.length)finish();
+      });
+      row.append(b);
+    });
+    d.append(p,row,fb);box.append(d);
+  });
+}
+function finish(){
+  const r=$("#result"),h=document.createElement("h3"),m=document.createElement("p"),b=document.createElement("button");
+  h.textContent="Your score: "+score+" of "+Q.length;
+  m.textContent=score===Q.length?"Perfect. Keep applying the same checks to real messages."
+    :score>=Math.ceil(Q.length*.7)?"Solid. Review the topics you missed: "+[...new Set(missed)].join(", ")+"."
+    :"Worth another pass. Revisit the red flags and tactics sections, then try again. Topics to review: "+[...new Set(missed)].join(", ")+".";
+  b.className="btn";b.textContent="Try again";
+  b.addEventListener("click",()=>{buildQuiz();$("#quiz").scrollIntoView()});
+  r.textContent="";r.append(h,m,b);r.hidden=false;r.scrollIntoView({block:"nearest"});
+}
+buildQuiz();
+</script>
+</body>
+</html>

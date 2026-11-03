@@ -1,0 +1,273 @@
+{
+  "store": "ShopEasy",
+  "fallback": "Sorry, I couldn't find an answer to that. Try rephrasing your question, or email support@shopeasy.example and our team will help.",
+  "intents": [
+    {
+      "id": "greeting",
+      "patterns": ["(hi+|hello+|hey+|hola|namaste|good (morning|afternoon|evening))( there| team| bot| shopeasy)?"],
+      "answer": "Hello! I'm the ShopEasy help assistant. Ask me about orders, delivery, returns, payments or your account."
+    },
+    {
+      "id": "thanks",
+      "patterns": ["(ok |okay |great |awesome |cool )?(thanks|thank you|thankyou|thx|ty)( a lot| so much| very much| a ton)?( for (your |the )?help)?", "that (helped|was helpful)"],
+      "answer": "You're welcome! Is there anything else I can help with?"
+    },
+    {
+      "id": "bye",
+      "patterns": ["(ok |okay )?(bye|goodbye|good ?night|see you( later| soon)?|take care|talk to you later|thats all( for now)?|nothing else)"],
+      "answer": "Thanks for stopping by. Have a great day!"
+    },
+    {
+      "id": "who-are-you",
+      "patterns": ["who are you", "what are you", "what is your name", "whats your name", "what can you (do|help me with|help with)", "are you a (bot|robot|human|person)", "help( me)?"],
+      "answer": "I'm ShopEasy's FAQ assistant, a small chatbot that finds the closest answer in our help articles. Try asking about delivery, returns, refunds or payments."
+    }
+  ],
+  "faqs": [
+    {
+      "id": "delivery-time",
+      "category": "Shipping",
+      "suggested": true,
+      "question": "How long does delivery take?",
+      "variants": ["When will my order arrive?", "What is the estimated delivery time?", "How many days does shipping take?", "When will I get my package?", "When does my parcel get here?", "How long until my order is delivered?", "How soon will I receive my order?", "How long will it take to get my order?", "How long will my order take?"],
+      "keywords": "delivery time days arrive dispatch",
+      "answer": "Standard delivery takes 3-5 business days in metro cities and 5-7 business days elsewhere in India. Express delivery (1-2 business days) is available at checkout for selected pin codes."
+    },
+    {
+      "id": "shipping-charges",
+      "category": "Shipping",
+      "question": "How much does shipping cost?",
+      "variants": ["What are the delivery charges?", "Is shipping free?", "Do you offer free delivery?", "Is there a minimum order for free shipping?", "Do I have to pay for delivery?", "Do I need to pay for shipping?", "Are there any delivery fees?"],
+      "keywords": "shipping charges fee free delivery cost",
+      "answer": "Delivery is free on orders above Rs. 499. For smaller orders, standard delivery costs Rs. 49 and express delivery costs Rs. 99."
+    },
+    {
+      "id": "track-order",
+      "category": "Orders",
+      "suggested": true,
+      "question": "How can I track my order?",
+      "variants": ["Where is my order?", "How do I check my order status?", "Track my package", "I want to know the status of my shipment", "Where is my package?", "Where is my parcel right now?", "Can I see where my delivery is?"],
+      "keywords": "tracking track status shipment parcel",
+      "answer": "Open My Orders in your account and select the order to see live tracking. We also email and SMS a tracking link as soon as your order ships."
+    },
+    {
+      "id": "order-delayed",
+      "category": "Shipping",
+      "question": "My order is delayed. What should I do?",
+      "variants": ["Why is my delivery late?", "My order has not been delivered yet", "My package hasn't arrived", "It has been a week and nothing has come"],
+      "keywords": "delayed late delay not arrived missing",
+      "answer": "We are sorry for the wait. Check the live status in My Orders first. If your order is more than 3 days past its estimated date, tap Need Help on that order and we will chase the courier or send a replacement."
+    },
+    {
+      "id": "change-address",
+      "category": "Orders",
+      "question": "Can I change my delivery address?",
+      "variants": ["How do I update the shipping address?", "I entered the wrong address", "Change the address after placing an order"],
+      "keywords": "address change update wrong location",
+      "answer": "You can change the address from My Orders until the order is packed. After that the address can't be changed, but you can contact support and we will try to redirect the parcel."
+    },
+    {
+      "id": "cancel-order",
+      "category": "Orders",
+      "question": "How do I cancel my order?",
+      "variants": ["Can I cancel an order after placing it?", "I want to cancel my purchase", "Cancel my order"],
+      "keywords": "cancel cancellation order",
+      "answer": "Go to My Orders, choose the order and tap Cancel. Orders can be cancelled until they are shipped. If you already paid online, the refund goes back to your original payment method in 5-7 business days."
+    },
+    {
+      "id": "return-policy",
+      "category": "Returns",
+      "suggested": true,
+      "question": "What is your return policy?",
+      "variants": ["How many days do I have to return an item?", "Can I return a product?", "Are returns accepted?", "Is there a return window?"],
+      "keywords": "return policy window days eligible",
+      "answer": "Most items can be returned within 7 days of delivery if they are unused and in their original packaging with tags. Innerwear, personalised items and gift cards cannot be returned."
+    },
+    {
+      "id": "start-return",
+      "category": "Returns",
+      "question": "How do I return a product?",
+      "variants": ["How do I start a return?", "I want to return my order", "What are the steps to return an item?", "Raise a return request"],
+      "keywords": "return pickup request send back",
+      "answer": "Open My Orders, select the item, tap Return and choose a reason. We will schedule a free pickup within 2 business days. Hand over the item in its original packaging."
+    },
+    {
+      "id": "refund-time",
+      "category": "Returns",
+      "suggested": true,
+      "question": "When will I get my refund?",
+      "variants": ["How long does a refund take?", "Where is my refund?", "What is my refund status?", "I haven't received my money back"],
+      "keywords": "refund money back credited status",
+      "answer": "Refunds are issued 2-3 business days after the returned item reaches our warehouse and passes a quality check. Your bank may then take 3-5 business days to show it. For cash on delivery orders you can choose a bank transfer or a ShopEasy wallet credit."
+    },
+    {
+      "id": "exchange-item",
+      "category": "Returns",
+      "question": "Can I exchange an item for a different size or colour?",
+      "variants": ["How do I exchange a product?", "It is the wrong size, can I swap it?", "What is the exchange policy?", "I want a different size"],
+      "keywords": "exchange swap size colour replace",
+      "answer": "Yes. Choose Exchange instead of Return in My Orders within 7 days of delivery and select the new size or colour. Exchanges are free and depend on stock availability."
+    },
+    {
+      "id": "damaged-item",
+      "category": "Returns",
+      "question": "What if I receive a damaged or wrong item?",
+      "variants": ["My product arrived broken", "I got the wrong item", "The package was damaged", "The item is defective", "I received a faulty product", "The product I received is broken", "My order arrived damaged", "The item arrived in bad condition"],
+      "keywords": "damaged broken wrong defective faulty incorrect",
+      "answer": "We are sorry about that. Report it within 48 hours of delivery from My Orders using Report a Problem and attach a photo. We will arrange a free pickup and send a replacement or a full refund."
+    },
+    {
+      "id": "payment-methods",
+      "category": "Payments",
+      "suggested": true,
+      "question": "Which payment methods do you accept?",
+      "variants": ["How can I pay for my order?", "Do you accept UPI?", "Can I pay with a credit card?", "Is net banking available?", "Do you take debit cards?"],
+      "keywords": "payment pay upi credit debit card netbanking wallet gpay phonepe paytm",
+      "answer": "We accept UPI, credit and debit cards, net banking, popular wallets, ShopEasy gift cards and cash on delivery."
+    },
+    {
+      "id": "cod",
+      "category": "Payments",
+      "question": "Is cash on delivery available?",
+      "variants": ["Can I pay when the product arrives?", "Do you have COD?", "Is there a pay on delivery option?"],
+      "keywords": "cod cash delivery pay later",
+      "answer": "Cash on delivery is available on orders up to Rs. 10,000 for most pin codes, with a fee of Rs. 40. You will see the option at checkout if your pin code is eligible."
+    },
+    {
+      "id": "payment-failed",
+      "category": "Payments",
+      "question": "My payment failed but money was deducted. What should I do?",
+      "variants": ["Money was debited but my order was not placed", "Payment deducted but no confirmation", "I was charged twice", "The transaction failed but I was charged", "The amount was deducted but the order failed", "Money was cut from my account but the order failed"],
+      "keywords": "payment failed deducted debited charged twice transaction",
+      "answer": "Don't worry. If the order was not created, the amount is returned automatically to your account within 5-7 business days. If you don't see it after that, write to support@shopeasy.example with the transaction ID."
+    },
+    {
+      "id": "emi",
+      "category": "Payments",
+      "question": "Do you offer EMI or no-cost EMI?",
+      "variants": ["Can I pay in instalments?", "What are the EMI options on a credit card?", "Is there a no cost EMI?", "Can I pay monthly?", "Is EMI available?"],
+      "keywords": "emi instalment installment monthly no-cost",
+      "answer": "EMI is available on orders above Rs. 3,000 with selected credit cards, for 3, 6 or 9 months. No-cost EMI is shown on eligible products at checkout."
+    },
+    {
+      "id": "coupon",
+      "category": "Payments",
+      "question": "How do I use a coupon or promo code?",
+      "variants": ["Where do I enter a discount code?", "My coupon is not working", "How do I apply a promo code?", "How can I get a discount?"],
+      "keywords": "coupon promo code discount voucher offer",
+      "answer": "Enter the code in the Apply Coupon box on the payment page and tap Apply. Codes can't be combined, and each one has its own minimum order value and expiry date. If a code doesn't work, check those two conditions first."
+    },
+    {
+      "id": "gift-card",
+      "category": "Payments",
+      "question": "How do gift cards work?",
+      "variants": ["Can I buy a gift card?", "How do I redeem a gift card?", "How do I check my gift card balance?"],
+      "keywords": "gift card voucher redeem balance",
+      "answer": "Buy a ShopEasy gift card from the Gift Cards page. The receiver gets a code by email and can enter it at checkout. Gift cards are valid for 12 months and any balance stays on the card."
+    },
+    {
+      "id": "create-account",
+      "category": "Account",
+      "question": "How do I create an account?",
+      "variants": ["How do I sign up?", "How can I register on ShopEasy?", "Do I need an account to order?", "Make a new profile"],
+      "keywords": "account sign up register create profile guest",
+      "answer": "Tap Sign Up, enter your name, email and mobile number, and verify the OTP we send. You can also check out as a guest, but an account lets you track orders and save addresses."
+    },
+    {
+      "id": "forgot-password",
+      "category": "Account",
+      "question": "I forgot my password. How do I reset it?",
+      "variants": ["How do I reset my password?", "I can't log in to my account", "How can I change my password?", "I have a login problem"],
+      "keywords": "password reset forgot login sign in locked",
+      "answer": "On the login page tap Forgot Password, enter your registered email or mobile number, and follow the link or OTP we send. Choose a new password with at least 8 characters."
+    },
+    {
+      "id": "update-details",
+      "category": "Account",
+      "question": "How can I update my email or phone number?",
+      "variants": ["How do I change my mobile number?", "How do I edit my profile details?", "Update my account information"],
+      "keywords": "update change edit email phone mobile profile details",
+      "answer": "Go to Account > Profile, edit your email or phone number and verify it with a one-time password."
+    },
+    {
+      "id": "delete-account",
+      "category": "Account",
+      "question": "How do I delete my account?",
+      "variants": ["Please remove my data", "I want to close my account", "How do I deactivate my profile?", "Delete my personal information"],
+      "keywords": "delete remove close deactivate account data privacy",
+      "answer": "Go to Account > Privacy > Delete Account, or email support@shopeasy.example from your registered address. Open orders must be completed first, and your data is removed within 30 days."
+    },
+    {
+      "id": "no-confirmation",
+      "category": "Orders",
+      "question": "I didn't receive my order confirmation email",
+      "variants": ["Where is my confirmation email?", "I got no order confirmation", "Did my order go through?"],
+      "keywords": "confirmation email placed went through",
+      "answer": "Check your spam or promotions folder first. You can also find every order under My Orders in your account. If the order is not listed there, it was not placed and you were not charged."
+    },
+    {
+      "id": "invoice",
+      "category": "Orders",
+      "question": "How can I download my invoice or GST bill?",
+      "variants": ["Where do I get the tax invoice?", "I need a GST invoice", "How do I download the bill for my order?", "I need an invoice for reimbursement"],
+      "keywords": "invoice gst bill receipt tax",
+      "answer": "Open My Orders, select the order and tap Download Invoice. To add your GST number for a business purchase, enter it at checkout before paying."
+    },
+    {
+      "id": "warranty",
+      "category": "Products",
+      "question": "Do products come with a warranty?",
+      "variants": ["How do I claim a warranty?", "Is there a warranty on electronics?", "Is there a guarantee on products?"],
+      "keywords": "warranty guarantee repair service claim electronics",
+      "answer": "Electronics and appliances carry the manufacturer's warranty, usually 1 year. The warranty card is in the box and the invoice in My Orders is your proof of purchase. For a claim, contact the brand's service centre, or write to us and we will help."
+    },
+    {
+      "id": "contact-support",
+      "category": "Support",
+      "question": "How can I contact customer support?",
+      "variants": ["What is your support email?", "I want to talk to a human", "What are your customer care hours?", "Is there a helpline number?", "Can I speak to an agent?"],
+      "keywords": "contact support customer care helpline agent email human phone",
+      "answer": "You can chat with this assistant any time or email support@shopeasy.example. Our team replies Monday to Saturday, 9 am to 8 pm IST, usually within 24 hours."
+    },
+    {
+      "id": "international-shipping",
+      "category": "Shipping",
+      "question": "Do you ship internationally?",
+      "variants": ["Can I order from outside India?", "Do you deliver to other countries?", "Do you deliver abroad?"],
+      "keywords": "international overseas abroad outside country foreign usa uk america canada australia uae europe singapore",
+      "answer": "Not yet. We currently deliver only within India. International shipping is planned for later."
+    },
+    {
+      "id": "out-of-stock",
+      "category": "Products",
+      "question": "What if an item is out of stock?",
+      "variants": ["When will the product be back in stock?", "Can you notify me when it is available?", "The product is sold out", "What is the restock date?"],
+      "keywords": "stock sold unavailable restock notify available",
+      "answer": "Tap Notify Me on the product page and we will email you as soon as it is back. Restock dates are shown on the page when we know them."
+    },
+    {
+      "id": "authenticity",
+      "category": "Products",
+      "question": "Are your products genuine?",
+      "variants": ["Are the products original?", "Do you sell fake or duplicate items?", "Is it authentic?", "Are these branded products real?"],
+      "keywords": "genuine original authentic fake duplicate branded",
+      "answer": "Yes. We buy directly from brands and authorised distributors, and every item is quality-checked before it ships. If you ever doubt a product, report it within 7 days and we will investigate."
+    },
+    {
+      "id": "reward-points",
+      "category": "Account",
+      "question": "How do reward points work?",
+      "variants": ["How do I earn loyalty points?", "Where can I use my points?", "What is the ShopEasy rewards programme?"],
+      "keywords": "reward points loyalty earn redeem",
+      "answer": "You earn 1 point for every Rs. 100 you spend. Each point is worth Rs. 1 off your next order, and points expire after 12 months. Your balance is under Account > Rewards."
+    },
+    {
+      "id": "bulk-orders",
+      "category": "Orders",
+      "question": "Can I place a bulk or corporate order?",
+      "variants": ["Do you offer business discounts?", "I want to buy in large quantities", "Do you take wholesale orders?", "Corporate gifting"],
+      "keywords": "bulk corporate wholesale business large quantity",
+      "answer": "Yes. For orders of 20 or more items, email business@shopeasy.example with your list and delivery city. We will reply with a quote and a business discount within 2 working days."
+    }
+  ]
+}

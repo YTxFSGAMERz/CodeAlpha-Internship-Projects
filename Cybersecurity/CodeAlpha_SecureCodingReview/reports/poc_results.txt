@@ -1,0 +1,48 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.7.0 -- /usr/bin/python3
+rootdir: /home/claude/CodeAlpha_SecureCodingReview
+collecting ... collected 26 items
+
+tests/test_findings.py::test_V01_sql_injection_login[vulnerable] PASSED  [  3%]
+tests/test_findings.py::test_V01_sql_injection_login[secure] PASSED      [  7%]
+tests/test_findings.py::test_V02_sql_injection_search[vulnerable] PASSED [ 11%]
+tests/test_findings.py::test_V02_sql_injection_search[secure] PASSED     [ 15%]
+tests/test_findings.py::test_V03_hardcoded_secret_key[vulnerable] PASSED [ 19%]
+tests/test_findings.py::test_V03_hardcoded_secret_key[secure] PASSED     [ 23%]
+tests/test_findings.py::test_V04_weak_password_hash[vulnerable] PASSED   [ 26%]
+tests/test_findings.py::test_V04_weak_password_hash[secure] PASSED       [ 30%]
+tests/test_findings.py::test_V05_template_injection_and_xss[vulnerable] PASSED [ 34%]
+tests/test_findings.py::test_V05_template_injection_and_xss[secure] PASSED [ 38%]
+tests/test_findings.py::test_V06_command_injection[vulnerable] PASSED    [ 42%]
+tests/test_findings.py::test_V06_command_injection[secure] PASSED        [ 46%]
+tests/test_findings.py::test_V07_path_traversal[vulnerable] PASSED       [ 50%]
+tests/test_findings.py::test_V07_path_traversal[secure] PASSED           [ 53%]
+tests/test_findings.py::test_V08_insecure_deserialization[vulnerable] PASSED [ 57%]
+tests/test_findings.py::test_V08_insecure_deserialization[secure] PASSED [ 61%]
+tests/test_findings.py::test_V09_idor[vulnerable] PASSED                 [ 65%]
+tests/test_findings.py::test_V09_idor[secure] PASSED                     [ 69%]
+tests/test_findings.py::test_V10_ssrf[vulnerable] PASSED                 [ 73%]
+tests/test_findings.py::test_V10_ssrf[secure] PASSED                     [ 76%]
+tests/test_findings.py::test_V11_csrf[vulnerable] PASSED                 [ 80%]
+tests/test_findings.py::test_V11_csrf[secure] PASSED                     [ 84%]
+tests/test_findings.py::test_V12_insecure_configuration[vulnerable] PASSED [ 88%]
+tests/test_findings.py::test_V12_insecure_configuration[secure] PASSED   [ 92%]
+tests/test_findings.py::test_V13_no_brute_force_protection[vulnerable] PASSED [ 96%]
+tests/test_findings.py::test_V13_no_brute_force_protection[secure] PASSED [100%]
+=========================== Proof-of-concept summary ===========================
+
+Finding                                       vulnerable_app   secure_app
+V01 SQL injection: login bypass               EXPLOITED        blocked
+V02 SQL injection: data theft via search      EXPLOITED        blocked
+V03 Hard-coded key: forged admin session      EXPLOITED        blocked
+V04 Weak hash: unsalted MD5 passwords         EXPLOITED        blocked
+V05 Template injection and XSS in /greet      EXPLOITED        blocked
+V06 Command injection in /ping                EXPLOITED        blocked
+V07 Path traversal in /download               EXPLOITED        blocked
+V08 Insecure deserialization (pickle cookie)  EXPLOITED        blocked
+V09 IDOR: reading another user's note         EXPLOITED        blocked
+V10 SSRF: server fetches internal URLs        EXPLOITED        blocked
+V11 CSRF: state change without a token        EXPLOITED        blocked
+V12 Debug mode and weak cookie flags          EXPLOITED        blocked
+V13 No lockout: unlimited password guesses    EXPLOITED        blocked
+============================== 26 passed in 6.10s ==============================

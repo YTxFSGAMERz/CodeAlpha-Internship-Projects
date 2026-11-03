@@ -1,0 +1,53 @@
+Run started:2026-10-27 11:05:32.092914+00:00
+
+Test results:
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: secure_app/app.py:18:0
+17	import sqlite3
+18	import subprocess
+19	import time
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: secure_app/app.py:198:21
+197	        try:                                                # S06: argument list, no shell (Linux ping flags)
+198	            result = subprocess.run(["ping", "-c", "1", "-W", "2", host],
+199	                                    capture_output=True, text=True, timeout=5, shell=False)
+200	        except (FileNotFoundError, subprocess.TimeoutExpired):
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: secure_app/app.py:199:21
+198	            result = subprocess.run(["ping", "-c", "1", "-W", "2", host],
+199	                                    capture_output=True, text=True, timeout=5, shell=False)
+200	        except (FileNotFoundError, subprocess.TimeoutExpired):
+201	            return jsonify(error="ping unavailable"), 503
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 209
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 3
+		Medium: 0
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 3
+Files skipped (0):

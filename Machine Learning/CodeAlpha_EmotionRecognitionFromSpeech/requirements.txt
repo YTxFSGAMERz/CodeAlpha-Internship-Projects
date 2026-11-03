@@ -1,0 +1,9 @@
+tensorflow>=2.12        # Keras 3 (TensorFlow 2.16+) and Keras 2.x both work
+librosa>=0.10           # MFCC feature extraction
+soundfile>=0.12
+numpy>=1.24
+pandas>=2.0
+scikit-learn>=1.2
+matplotlib>=3.7
+# optional - only for `python predict.py --record 4` (live microphone):
+# sounddevice>=0.4

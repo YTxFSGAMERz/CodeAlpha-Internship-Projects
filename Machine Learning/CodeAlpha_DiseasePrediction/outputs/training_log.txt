@@ -1,0 +1,35 @@
+
+==============================================================================
+Heart disease (UCI Statlog Heart): 270 patients, 13 features, 44.4% have the disease
+==============================================================================
+  Logistic Regression  CV roc_auc = 0.912   |  test: acc 0.870  prec 0.815  recall 0.917  F1 0.863  AUC 0.911
+  SVM                  CV roc_auc = 0.913   |  test: acc 0.852  prec 0.808  recall 0.875  F1 0.840  AUC 0.907
+  Random Forest        CV roc_auc = 0.913   |  test: acc 0.815  prec 0.769  recall 0.833  F1 0.800  AUC 0.886
+  XGBoost              CV roc_auc = 0.901   |  test: acc 0.833  prec 0.800  recall 0.833  F1 0.816  AUC 0.887
+
+  Best model (by CV roc_auc): SVM
+  Most important features: ca, thal, cp, oldpeak, thalach
+
+==============================================================================
+Diabetes (Pima Indians): 768 patients, 8 features, 34.9% have the disease
+==============================================================================
+  Logistic Regression  CV roc_auc = 0.845   |  test: acc 0.708  prec 0.571  recall 0.667  F1 0.615  AUC 0.810
+  SVM                  CV roc_auc = 0.849   |  test: acc 0.708  prec 0.600  recall 0.500  F1 0.545  AUC 0.810
+  Random Forest        CV roc_auc = 0.842   |  test: acc 0.747  prec 0.615  recall 0.741  F1 0.672  AUC 0.821
+  XGBoost              CV roc_auc = 0.841   |  test: acc 0.760  prec 0.631  recall 0.759  F1 0.689  AUC 0.818
+
+  Best model (by CV roc_auc): SVM
+  Most important features: Glucose, BMI, Pregnancies, DiabetesPedigreeFunction, Age
+
+==============================================================================
+Breast cancer (Wisconsin Diagnostic): 569 patients, 30 features, 37.3% have the disease
+==============================================================================
+  Logistic Regression  CV roc_auc = 0.995   |  test: acc 0.974  prec 0.976  recall 0.952  F1 0.964  AUC 0.995
+  SVM                  CV roc_auc = 0.996   |  test: acc 0.983  prec 1.000  recall 0.952  F1 0.976  AUC 0.997
+  Random Forest        CV roc_auc = 0.989   |  test: acc 0.974  prec 1.000  recall 0.929  F1 0.963  AUC 0.996
+  XGBoost              CV roc_auc = 0.995   |  test: acc 0.974  prec 1.000  recall 0.929  F1 0.963  AUC 0.991
+
+  Best model (by CV roc_auc): SVM
+  Most important features: worst_texture, worst_concavity, mean_concave_points, mean_concavity, worst_smoothness
+
+Done. Results are in 'outputs/', trained models in 'models/'.

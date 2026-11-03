@@ -1,0 +1,7 @@
+tensorflow>=2.12        # Keras 3 (TensorFlow 2.16+) and Keras 2.x both work
+numpy>=1.24
+scipy>=1.10
+scikit-learn>=1.2
+matplotlib>=3.7
+pillow>=9.0
+emnist>=0.0             # only needed for the EMNIST datasets (emnist-letters / -balanced / ...)
