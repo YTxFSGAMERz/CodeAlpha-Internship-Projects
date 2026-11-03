@@ -30,7 +30,12 @@ def open_source(source: str) -> cv2.VideoCapture:
     """A number means a webcam, anything else is a video file or stream URL."""
     capture = cv2.VideoCapture(int(source) if source.isdigit() else source)
     if not capture.isOpened():
-        raise SystemExit(f"Could not open the video source: {source}")
+        if source.isdigit():
+            raise SystemExit(
+                f"Could not open webcam #{source}. If no camera is available on this machine, "
+                f"pass a video file instead:  python detect_track.py --source your_video.mp4"
+            )
+        raise SystemExit(f"Could not open the video file or stream: {source}")
     return capture
 
 

@@ -48,12 +48,34 @@ def language_options() -> list[dict[str, str]]:
     return sorted(options, key=lambda option: option["name"])
 
 
-def _translate_line(engine: GoogleTranslator, line: str) -> str:
-    """Send one line of text to the translation service."""
-    result = engine.translate(line.strip())
-    if not result:
-        raise TranslationError("The service returned an empty translation. Try rephrasing.", 422)
-    return result
+def _translate_gtx(line: str, source: str, target: str) -> str:
+    """Direct API fallback when web scraping encounters rate limits or errors."""
+    url = "https://translate.googleapis.com/translate_a/single"
+    params = {"client": "gtx", "sl": source, "tl": target, "dt": "t", "q": line}
+    resp = requests.get(url, params=params, timeout=10)
+    if resp.status_code == 200:
+        data = resp.json()
+        if data and data[0]:
+            return "".join(part[0] for part in data[0] if part and part[0])
+    resp.raise_for_status()
+    raise TranslationError("Could not translate this line.", 422)
+
+
+def _translate_line(engine: GoogleTranslator, line: str, source: str = AUTO, target: str = "en") -> str:
+    """Send one line of text to the translation service with an automatic fallback."""
+    try:
+        result = engine.translate(line.strip())
+        if not result:
+            raise TranslationError("The service returned an empty translation. Try rephrasing.", 422)
+        return result
+    except (TooManyRequests, RequestError):
+        # When deep-translator gets 429 from Google's mobile web page, fall back to the API
+        if type(engine).__name__ == "GoogleTranslator":
+            try:
+                return _translate_gtx(line.strip(), source, target)
+            except Exception:
+                pass
+        raise
 
 
 def translate(text: str, source: str = AUTO, target: str = "en") -> str:
@@ -89,7 +111,7 @@ def translate(text: str, source: str = AUTO, target: str = "en") -> str:
                 translated.append("")
                 continue
             if line not in done:
-                done[line] = _translate_line(engine, line)
+                done[line] = _translate_line(engine, line, source, target)
             translated.append(done[line])
     except TranslationError:
         raise

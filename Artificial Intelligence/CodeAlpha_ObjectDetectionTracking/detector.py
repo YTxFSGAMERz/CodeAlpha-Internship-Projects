@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 import numpy as np
 
 
@@ -39,7 +40,11 @@ class YoloDetector:
         except ImportError as error:
             raise SystemExit("Ultralytics is not installed. Run:  pip install -r requirements.txt") from error
 
-        self.model = YOLO(weights)          # downloads the weights the first time
+        local_weights = Path(__file__).parent / weights
+        if not Path(weights).is_file() and local_weights.is_file():
+            weights = str(local_weights)
+
+        self.model = YOLO(weights)          # downloads the weights the first time if not found
         self.names: dict[int, str] = dict(self.model.names)
         self.conf = conf
         self.imgsz = imgsz
@@ -59,3 +64,22 @@ class YoloDetector:
             _to_numpy(boxes.conf),
             _to_numpy(boxes.cls),
         ]).astype(np.float32)
+
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("CodeAlpha - YOLO Object Detector Module (detector.py)")
+    print("=" * 60)
+    print("Initializing YOLO detector...")
+    try:
+        det = YoloDetector(conf=0.35)
+        print(f"Detector ready. Total categories: {len(det.names)}")
+        print(f"Sample classes: {', '.join([det.names[i] for i in range(min(8, len(det.names)))])}...")
+        sample_frame = np.zeros((480, 640, 3), dtype=np.uint8)
+        dets = det(sample_frame)
+        print(f"Test inference on 640x480 frame: {len(dets)} detections found (black test image).")
+    except Exception as e:
+        print(f"Detector check: {e}")
+    print("\nNote: This is a support module. To run the full detection and tracking program, execute:")
+    print("    python detect_track.py --source 0")
+    print("    python detect_track.py --source your_video.mp4")

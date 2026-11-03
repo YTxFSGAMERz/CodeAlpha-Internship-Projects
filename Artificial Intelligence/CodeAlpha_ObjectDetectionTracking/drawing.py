@@ -72,3 +72,16 @@ def draw_info(frame: np.ndarray, fps: float, visible: int, total: int) -> None:
         position = (10, 24 + 22 * i)
         cv2.putText(frame, text, position, FONT, 0.6, (0, 0, 0), 3, cv2.LINE_AA)       # outline
         cv2.putText(frame, text, position, FONT, 0.6, (255, 255, 255), 1, cv2.LINE_AA)
+
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("CodeAlpha - Object Detection & Tracking Visualizer (drawing.py)")
+    print("=" * 60)
+    print("Testing HUD telemetry and annotation drawing on a synthetic frame...")
+    canvas = np.zeros((360, 640, 3), dtype=np.uint8)
+    draw_info(canvas, fps=29.8, visible=3, total=7)
+    print(f"Canvas created and annotated: {canvas.shape[1]}x{canvas.shape[0]} px, 3 channels.")
+    print("\nNote: This is an annotation module. To run live tracking, execute:")
+    print("    python detect_track.py --source 0")
+    print("    python detect_track.py --source your_video.mp4 --trails")

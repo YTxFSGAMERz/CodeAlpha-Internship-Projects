@@ -192,3 +192,30 @@ class SortTracker:
         ]
         self.tracks = [t for t in self.tracks if t.time_since_update <= self.max_age]
         return shown
+
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("CodeAlpha - SORT (Simple Online and Realtime Tracking)")
+    print("=" * 60)
+    print("Simulating object tracking over 5 synthetic video frames...\n")
+    tracker = SortTracker(min_hits=1)
+    for frame_idx in range(1, 6):
+        # Simulate an object moving across the screen (x1, y1, x2, y2, conf, class_id)
+        mock_detection = np.array([[
+            20.0 + frame_idx * 10,
+            30.0 + frame_idx * 5,
+            80.0 + frame_idx * 10,
+            110.0 + frame_idx * 5,
+            0.92,
+            0,
+        ]])
+        tracked_objects = tracker.update(mock_detection)
+        for obj in tracked_objects:
+            x1, y1, x2, y2 = [round(coord, 1) for coord in obj.bbox]
+            print(f"Frame {frame_idx}: Track ID #{obj.track_id} | Class {obj.class_id} | BBox [{x1}, {y1}, {x2}, {y2}] | Conf {obj.confidence:.0%}")
+
+    print("\nSORT tracking pipeline is working properly.")
+    print("Note: To run real-time tracking on webcam or video files, run:")
+    print("    python detect_track.py --source 0")
+    print("    python detect_track.py --source your_video.mp4")

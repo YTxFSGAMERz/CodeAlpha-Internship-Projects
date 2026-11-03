@@ -46,3 +46,18 @@ class DeepSortTracker:
                 confidence=float(track.det_conf or 0.0),
             ))
         return shown
+
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("CodeAlpha - Deep SORT Tracker Module (deepsort_tracker.py)")
+    print("=" * 60)
+    print("Initializing Deep SORT appearance tracker...")
+    try:
+        tracker = DeepSortTracker()
+        print("DeepSortTracker initialized with MobileNet appearance embedder.")
+    except Exception as e:
+        print(f"DeepSort initialization note: {e}")
+    print("\nNote: This is a tracker engine module. To run detection and tracking, execute:")
+    print("    python detect_track.py --tracker deepsort --source 0")
+    print("    python detect_track.py --tracker deepsort --source your_video.mp4")

@@ -22,7 +22,20 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 import numpy as np
-from music21 import chord, converter, corpus, note
+from music21 import chord, converter, corpus, freezeThaw, note
+
+# Prevent music21 cache permission errors on locked Windows temp files
+_orig_freezer_write = freezeThaw.StreamFreezer.write
+
+
+def _safe_freezer_write(self, *args, **kwargs):
+    try:
+        return _orig_freezer_write(self, *args, **kwargs)
+    except (PermissionError, OSError):
+        return None
+
+
+freezeThaw.StreamFreezer.write = _safe_freezer_write
 
 from config import (
     DURATIONS, GRID, MAX_DELTA, MAX_POLYPHONY, MIDI_DIR, MIN_CHORD_COUNT,
@@ -91,9 +104,9 @@ def load_pieces(source: str, midi_dir: Path, max_files: int | None, transpose: b
         parse = lambda path: converter.parse(str(path))             # noqa: E731
     else:
         print("No MIDI files in data/midi - using the Bach chorales that come with music21")
-        scores = ((s.metadata.title if s.metadata and s.metadata.title else f"chorale {i}", s)
-                  for i, s in enumerate(corpus.chorales.Iterator(), start=1))
-        parse = lambda score: score                                  # noqa: E731
+        chorale_files = list(corpus.chorales.Iterator(returnType="filename"))
+        scores = ((fn, fn) for fn in chorale_files)
+        parse = lambda fn: corpus.parse(fn)                         # noqa: E731
 
     used = 0
     for index, (name, item) in enumerate(scores, start=1):

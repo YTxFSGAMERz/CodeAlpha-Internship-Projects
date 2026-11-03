@@ -61,10 +61,10 @@ def generate_events(model, seed_chords, seed_waits, length, temperature, top_k, 
             "dur_in": np.array([waits[-SEQ_LEN:]], dtype="int32"),
         }
         prediction = model(window, training=False)
-        next_chord = np.asarray(prediction["chord_out"])[0, -1]
-        next_wait = np.asarray(prediction["dur_out"])[0, -1]
-        chords.append(sample_index(next_chord, temperature, top_k, rng))
-        waits.append(sample_index(next_wait, temperature, min(top_k, 5) if top_k else 0, rng))
+        chord_logits = keras.ops.convert_to_numpy(prediction["chord_out"])[0, -1]
+        wait_logits = keras.ops.convert_to_numpy(prediction["dur_out"])[0, -1]
+        chords.append(sample_index(chord_logits, temperature, top_k, rng))
+        waits.append(sample_index(wait_logits, temperature, min(top_k, 5) if top_k else 0, rng))
     return chords[len(seed_chords):], waits[len(seed_waits):]
 
 
