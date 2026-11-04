@@ -214,3 +214,9 @@ def test_V13_no_brute_force_protection(target):
     c = target.client()
     codes = [c.post("/login", username="admin", password=f"guess{i}").status_code for i in range(8)]
     target.record("V13", "No lockout: unlimited password guesses", 429 not in codes)
+
+
+if __name__ == "__main__":
+    import pytest
+    print("Running 26 proof-of-concept tests across vulnerable_app and secure_app...\n")
+    sys.exit(pytest.main(["-v", __file__]))

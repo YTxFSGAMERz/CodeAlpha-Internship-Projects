@@ -56,6 +56,43 @@ def create_app(db_path=None, testing=False):
                      (md5(ADMIN_PASSWORD),))
         conn.commit()
 
+    @app.get("/")
+    def index():
+        return render_template_string("""<!DOCTYPE html>
+<html>
+<head>
+    <title>NoteBox (Vulnerable Edition)</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.5; color: #1c1c1c; }
+        .badge { background: #d9381e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
+        .card { background: #fdf5f5; border: 1px solid #f5c2c7; border-radius: 8px; padding: 16px; margin: 20px 0; }
+        code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+        ul { line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <h1>NoteBox <span class="badge">Vulnerable Edition (Port 5001)</span></h1>
+    <div class="card">
+        <strong>⚠️ Security Review Target:</strong> This application deliberately contains known security flaws (V01–V13) for audit practice. 
+        It is paired with the hardened version running on port 5002.
+    </div>
+    <h3>Available Endpoints:</h3>
+    <ul>
+        <li><code>POST /register</code> - Register new account: <code>{"username": "...", "password": "..."}</code></li>
+        <li><code>POST /login</code> - Account login (contains SQLi: <code>admin' --</code>)</li>
+        <li><code>GET /notes</code> - List authenticated user's notes</li>
+        <li><code>POST /notes</code> - Create note: <code>{"title": "...", "body": "..."}</code></li>
+        <li><code>GET /search?q=...</code> - Search notes (contains SQLi data extraction)</li>
+        <li><code>GET /greet?name=...</code> - Greeter (contains SSTI & XSS)</li>
+        <li><code>GET /ping?host=127.0.0.1</code> - Admin ping diagnostic (contains Command Injection)</li>
+        <li><code>GET /download?file=...</code> - File download (contains Directory Traversal)</li>
+        <li><code>GET /preview?url=...</code> - URL previewer (contains SSRF)</li>
+        <li><code>GET/POST /prefs</code> - Theme preferences (contains Insecure Deserialization)</li>
+    </ul>
+    <p>Run proof-of-concept automated test suite: <code>pytest tests/test_findings.py -v</code></p>
+</body>
+</html>""")
+
     @app.post("/register")
     def register():
         data = request.get_json(force=True)
