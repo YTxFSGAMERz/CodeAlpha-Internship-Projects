@@ -14,6 +14,7 @@ The model rescales to [0, 1] itself, so training and prediction use the same raw
 """
 from __future__ import annotations
 
+import os
 import numpy as np
 from sklearn.model_selection import train_test_split
 
@@ -45,8 +46,9 @@ PREPROCESS = {
 
 
 def _load_mnist():
-    from tensorflow.keras.datasets import mnist          # downloads ~11 MB the first time
-    (x_tr, y_tr), (x_te, y_te) = mnist.load_data()
+    os.environ.setdefault("KERAS_BACKEND", "torch")
+    import keras
+    (x_tr, y_tr), (x_te, y_te) = keras.datasets.mnist.load_data()
     return x_tr, y_tr, x_te, y_te
 
 

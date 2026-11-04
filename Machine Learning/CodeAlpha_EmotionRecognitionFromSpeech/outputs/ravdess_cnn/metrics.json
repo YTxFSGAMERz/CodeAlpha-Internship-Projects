@@ -1,0 +1,27 @@
+{
+  "classes": [
+    "angry",
+    "calm",
+    "disgust",
+    "fear",
+    "happy",
+    "neutral",
+    "sad",
+    "surprise"
+  ],
+  "model": "cnn",
+  "split": "speaker",
+  "sample_rate": 22050,
+  "n_mfcc": 40,
+  "hop_length": 512,
+  "max_frames": 130,
+  "datasets": [
+    "ravdess"
+  ],
+  "test_accuracy": 0.6094,
+  "test_uar": 0.6094,
+  "test_macro_f1": 0.5022,
+  "train_clips": 160,
+  "augmented_copies": 0,
+  "epochs_trained": 2
+}

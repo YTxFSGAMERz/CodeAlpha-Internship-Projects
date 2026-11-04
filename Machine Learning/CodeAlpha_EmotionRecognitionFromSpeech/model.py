@@ -1,7 +1,11 @@
 """Three neural networks for speech emotion recognition - pick one with  train.py --model ..."""
 from __future__ import annotations
 
-from tensorflow.keras import layers, models
+import os
+
+os.environ.setdefault("KERAS_BACKEND", "torch")
+import keras
+from keras import layers, models
 
 
 def _conv_block(x, filters):

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 import librosa
@@ -20,13 +21,15 @@ MODEL_DIR = Path(__file__).resolve().parent / "models"
 
 
 def load_bundle():
-    import tensorflow as tf
+    os.environ.setdefault("KERAS_BACKEND", "torch")
+    import keras
+
     model_path = MODEL_DIR / "emotion_model.keras"
     if not model_path.exists():
         raise SystemExit("No trained model found. Run  python train.py --ravdess <folder>  first.")
     norm = np.load(MODEL_DIR / "emotion_norm.npz")
     meta = json.loads((MODEL_DIR / "emotion_meta.json").read_text())
-    return tf.keras.models.load_model(model_path), meta, norm
+    return keras.models.load_model(model_path), meta, norm
 
 
 def predict_waveform(model, meta, norm, y):

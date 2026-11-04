@@ -1,7 +1,11 @@
 """The CNN used for MNIST / EMNIST character recognition."""
 from __future__ import annotations
 
-from tensorflow.keras import layers, models
+import os
+
+os.environ.setdefault("KERAS_BACKEND", "torch")
+import keras
+from keras import layers, models
 
 
 def conv_block(x, filters):

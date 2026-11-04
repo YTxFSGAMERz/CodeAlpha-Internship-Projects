@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -22,12 +23,14 @@ MODEL_DIR = Path(__file__).resolve().parent / "models"
 
 
 def load_model_and_meta(dataset: str):
-    import tensorflow as tf
+    os.environ.setdefault("KERAS_BACKEND", "torch")
+    import keras
+
     model_path = MODEL_DIR / f"{dataset}_cnn.keras"
     meta_path = MODEL_DIR / f"{dataset}_meta.json"
     if not model_path.exists():
         raise SystemExit(f"No trained model at {model_path}. Run:  python train.py --dataset {dataset}")
-    return tf.keras.models.load_model(model_path), json.loads(meta_path.read_text())
+    return keras.models.load_model(model_path), json.loads(meta_path.read_text())
 
 
 def predict_images(model, meta, images28, top=3):

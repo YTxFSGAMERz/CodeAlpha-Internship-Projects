@@ -20,14 +20,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
+os.environ.setdefault("KERAS_BACKEND", "torch")
+import keras
 import matplotlib
 
 matplotlib.use("Agg")  # draw to files, no window needed
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
 from sklearn.metrics import (ConfusionMatrixDisplay, balanced_accuracy_score, classification_report,
                              f1_score)
 from sklearn.model_selection import GroupShuffleSplit, train_test_split
@@ -100,7 +102,7 @@ def main():
     ap.add_argument("--no-cache", action="store_true", help="do not cache extracted features in ./cache")
     args = ap.parse_args()
 
-    tf.keras.utils.set_random_seed(SEED)
+    keras.utils.set_random_seed(SEED)
     (ROOT / "models").mkdir(exist_ok=True)
     cache = None if args.no_cache else ROOT / "cache"
 
@@ -132,7 +134,7 @@ def main():
     print(f"Training tensor: {X_tr.shape}  (clips, frames, features)\n")
 
     model = build_model(args.model, X_tr.shape[1:], len(classes))
-    model.compile(optimizer=tf.keras.optimizers.Adam(1e-3),
+    model.compile(optimizer=keras.optimizers.Adam(1e-3),
                   loss="sparse_categorical_crossentropy", metrics=["accuracy"])
     model.summary()
 
@@ -140,9 +142,9 @@ def main():
     # Early stopping watches validation ACCURACY. (Validation loss is a poor signal on small speech
     # datasets: it is lowest in the first epochs, before the model has learned anything useful.)
     callbacks = [
-        tf.keras.callbacks.EarlyStopping(monitor="val_accuracy", mode="max", patience=25,
-                                         restore_best_weights=True),
-        tf.keras.callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=6, min_lr=1e-5),
+        keras.callbacks.EarlyStopping(monitor="val_accuracy", mode="max", patience=25,
+                                      restore_best_weights=True),
+        keras.callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=6, min_lr=1e-5),
     ]
     history = model.fit(X_tr, y_tr, validation_data=(X_va, y_va), epochs=args.epochs,
                         batch_size=args.batch_size, class_weight=dict(enumerate(map(float, weights))),

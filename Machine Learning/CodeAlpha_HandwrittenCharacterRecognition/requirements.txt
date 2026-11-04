@@ -1,4 +1,5 @@
-tensorflow>=2.12        # Keras 3 (TensorFlow 2.16+) and Keras 2.x both work
+keras>=3.0
+torch>=2.0
 numpy>=1.24
 scipy>=1.10
 scikit-learn>=1.2

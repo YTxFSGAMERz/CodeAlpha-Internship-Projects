@@ -18,27 +18,22 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
+os.environ.setdefault("KERAS_BACKEND", "torch")
+import keras
 import matplotlib
 
 matplotlib.use("Agg")  # draw to files, no window needed
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
 from sklearn.metrics import ConfusionMatrixDisplay, classification_report
 
 from data_loader import SEED, load_dataset
 from model import build_cnn
 
 ROOT = Path(__file__).resolve().parent
-
-
-def make_dataset(x, y, batch_size, shuffle=False):
-    ds = tf.data.Dataset.from_tensor_slices((x, y))
-    if shuffle:
-        ds = ds.shuffle(min(len(x), 50_000), seed=SEED)
-    return ds.batch(batch_size).prefetch(tf.data.AUTOTUNE)
 
 
 # --------------------------------------------------------------------------- plots
@@ -97,7 +92,7 @@ def main():
     ap.add_argument("--no-augment", action="store_true", help="turn off random rotation / shift / zoom")
     args = ap.parse_args()
 
-    tf.keras.utils.set_random_seed(SEED)
+    keras.utils.set_random_seed(SEED)
     out = ROOT / "outputs" / args.dataset
     out.mkdir(parents=True, exist_ok=True)
     (ROOT / "models").mkdir(exist_ok=True)
@@ -107,24 +102,23 @@ def main():
     print(f"Dataset {args.dataset}: {len(data['x_train']):,} train / {len(data['x_val']):,} validation / "
           f"{len(data['x_test']):,} test images, {len(classes)} classes")
 
-    train_ds = make_dataset(data["x_train"], data["y_train"], args.batch_size, shuffle=True)
-    val_ds = make_dataset(data["x_val"], data["y_val"], args.batch_size)
-    test_ds = make_dataset(data["x_test"], data["y_test"], args.batch_size)
-
     model = build_cnn(len(classes), augment=not args.no_augment)
-    model.compile(optimizer=tf.keras.optimizers.Adam(1e-3),
+    model.compile(optimizer=keras.optimizers.Adam(1e-3),
                   loss="sparse_categorical_crossentropy", metrics=["accuracy"])
     model.summary()
 
     callbacks = [
-        tf.keras.callbacks.EarlyStopping(monitor="val_accuracy", patience=4, restore_best_weights=True),
-        tf.keras.callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=2, min_lr=1e-5),
+        keras.callbacks.EarlyStopping(monitor="val_accuracy", patience=4, restore_best_weights=True),
+        keras.callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=2, min_lr=1e-5),
     ]
-    history = model.fit(train_ds, validation_data=val_ds, epochs=args.epochs,
-                        callbacks=callbacks, verbose=2)
+    history = model.fit(data["x_train"], data["y_train"],
+                        validation_data=(data["x_val"], data["y_val"]),
+                        batch_size=args.batch_size, shuffle=True,
+                        epochs=args.epochs, callbacks=callbacks, verbose=2)
 
     # ---- evaluation on data the model has never seen
-    test_loss, test_acc = model.evaluate(test_ds, verbose=0)
+    test_loss, test_acc = model.evaluate(data["x_test"], data["y_test"],
+                                         batch_size=args.batch_size, verbose=0)
     probs = model.predict(data["x_test"], batch_size=512, verbose=0)
     y_true, y_pred = data["y_test"], probs.argmax(axis=1)
     print(f"\nTEST ACCURACY: {test_acc:.4f}   (loss {test_loss:.4f})\n")

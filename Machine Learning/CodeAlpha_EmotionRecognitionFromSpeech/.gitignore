@@ -1,6 +1,5 @@
 __pycache__/
 *.pyc
-models/
 cache/
 demo_data/
 .venv/
