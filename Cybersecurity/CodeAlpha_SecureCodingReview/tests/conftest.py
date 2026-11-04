@@ -20,4 +20,4 @@ if __name__ == "__main__":
     import pytest
     test_file = os.path.join(os.path.dirname(__file__), "test_findings.py")
     print("Executing security proof-of-concept tests...\n")
-    sys.exit(pytest.main(["-v", test_file]))
+    sys.exit(pytest.main(["-v", "-p", "no:cacheprovider", "-W", "ignore::DeprecationWarning", test_file]))

@@ -69,5 +69,7 @@ Desktop.ini
 # Temporary and local runtime outputs
 *.tmp
 *.bak
+*.db
+*.sqlite3
 scratch/
 temp/

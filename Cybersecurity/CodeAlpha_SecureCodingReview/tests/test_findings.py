@@ -11,8 +11,10 @@ import http.server
 import importlib.util
 import os
 import pickle
+import shutil
 import sqlite3
 import sys
+import tempfile
 import threading
 
 import pytest
@@ -69,7 +71,7 @@ class Target:
     def __init__(self, name, tmp_path):
         self.name = name
         self.folder, self.admin_password = APPS[name]
-        self.db_path = str(tmp_path / "test.db")
+        self.db_path = os.path.join(str(tmp_path), "test.db")
         self.app = load(name).create_app(db_path=self.db_path, testing=True)
 
     def client(self):
@@ -94,8 +96,13 @@ class Target:
 
 
 @pytest.fixture(params=["vulnerable", "secure"])
-def target(request, tmp_path):
-    return Target(request.param, tmp_path)
+def target(request):
+    tmp_dir = tempfile.mkdtemp(prefix="notebox_poc_")
+    t = Target(request.param, tmp_dir)
+    try:
+        yield t
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
 def stored_password(db_path, username):
@@ -219,4 +226,4 @@ def test_V13_no_brute_force_protection(target):
 if __name__ == "__main__":
     import pytest
     print("Running 26 proof-of-concept tests across vulnerable_app and secure_app...\n")
-    sys.exit(pytest.main(["-v", __file__]))
+    sys.exit(pytest.main(["-v", "-p", "no:cacheprovider", "-W", "ignore::DeprecationWarning", __file__]))
