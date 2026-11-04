@@ -1,15 +1,23 @@
 """
 Automated unit tests for Speech Emotion Recognition features and pipeline.
 """
-import sys
+import importlib.util
 from pathlib import Path
 import pytest
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
 
-from features import waveform_to_features, augment_waveform, N_FEATURES
+def _import_local(name, filename):
+    spec = importlib.util.spec_from_file_location(name, ROOT / filename)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+feat_mod = _import_local("speech_features", "features.py")
+waveform_to_features = feat_mod.waveform_to_features
+augment_waveform = feat_mod.augment_waveform
+N_FEATURES = feat_mod.N_FEATURES
 
 
 def test_waveform_to_features_shape():

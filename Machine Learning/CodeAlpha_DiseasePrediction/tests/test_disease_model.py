@@ -1,15 +1,22 @@
 """
 Automated unit tests for Disease Prediction Model.
 """
-import sys
+import importlib.util
 from pathlib import Path
 import pytest
 import joblib
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
 
-from data_loader import load_dataset, DATASETS
+def _import_local(name, filename):
+    spec = importlib.util.spec_from_file_location(name, ROOT / filename)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+dl = _import_local("disease_data_loader", "data_loader.py")
+load_dataset = dl.load_dataset
+DATASETS = dl.DATASETS
 
 
 def test_datasets_load():
